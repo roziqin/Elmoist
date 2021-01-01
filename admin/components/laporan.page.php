@@ -2,7 +2,7 @@
 	<div class="container-fluid p-0 fadeIn animated">
 		<div class="row header-content pt-3 pb-0 info-color text-white">
 			<div class="col-md-12">
-				<h2 class=" border-bottom border-white mb-0 pb-2">Laporan Penjualan</h2>
+				<h2 class=" border-bottom border-white mb-0 pb-2">Laporan</h2>
 			</div>
 			<div class="col-md-12 pl-0 pr-0 ">
 				<ul class="nav">
@@ -13,17 +13,31 @@
 				      <a class="nav-link waves-light" id="kasir">Kasir</a>
 				    </li>
 				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="member">Member</a>
+				    </li>
+				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="nota">Nota</a>
 				    </li>
 				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="menu">Item Terjual</a>
 				    </li>
 				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="pembelian">Pembelian</a>
+				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="mutasi">Mutasi</a>
+				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="stokmenu">Stok</a>
+				    </li>
+				    <!--
+				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="stok">Stok Masuk</a>
 				    </li>
 				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="stokkeluar">Stok Keluar</a>
 				    </li>
+					-->
 				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="validasi">Validasi</a>
 				    </li>
@@ -65,7 +79,15 @@
 					$('.container__load').load('components/content/laporan.content.php?ket=stokkeluar');			
 				} else if(menu == "validasi"){
 					$('.container__load').load('components/content/laporan.content.php?ket=validasi');			
-				}
+				} else if(menu == "pembelian"){
+					$('.container__load').load('components/content/laporan.content.php?ket=pembelian');			
+				} else if(menu == "member"){
+					$('.container__load').load('components/content/laporan.content.php?ket=member');			
+				} else if(menu == "mutasi"){
+					$('.container__load').load('components/content/laporan.content.php?ket=mutasi');			
+				} else if(menu == "stokmenu"){
+					$('.container__load').load('components/content/laporan.content.php?ket=stokmenu');			
+				} 
 			});
 	 
 			$('.container__load').load('components/content/laporan.content.php?ket=omset');

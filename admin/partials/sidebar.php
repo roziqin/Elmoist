@@ -25,13 +25,13 @@
 					<li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=transaksi" data-toggle="tooltip" title="Transaksi"><i class="sv-slim-icon fas fa-shopping-basket"></i>Transaksi</a>
 					</li>
+		      		<?php if ($_SESSION['role']=="admin" || $_SESSION['role']=="administrator") { ?>
 					<li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=produk" data-toggle="tooltip" title="Produk"><i class="sv-slim-icon fas fa-box-open"></i>Produk</a>
 			        </li>
 					<li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=stok" data-toggle="tooltip" title="Stok"><i class="sv-slim-icon fas fa-clipboard-list"></i>Stok</a>
 			        </li>
-		      		<?php if ($_SESSION['role']=="admin" || $_SESSION['role']=="administrator") { ?>
 			        <li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=laporan" data-toggle="tooltip" title="Laporan"><i class="sv-slim-icon fas fa-chart-bar"></i>Laporan</a>
 			        </li>

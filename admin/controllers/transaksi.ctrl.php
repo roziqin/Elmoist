@@ -258,12 +258,20 @@ if($_GET['ket']=='tambahmenu'){
         $resultstok=mysqli_query($con,$sqlstok);
 	    $datastok=mysqli_fetch_assoc($resultstok);
 
+		$awal=$datastok['barang_stok'];
+
         if($datastok['barang_set_stok']!=0) {
+
         	$jml_stok = $datastok['barang_stok'] - $jumlah;
+        	
+	        $sql1 = "INSERT into log_stok(user,barang,stok_awal,stok_jumlah,tanggal,alasan,keterangan)values('$user','$barang','$awal','$jml_stok','$tgl','','transaksi')";
+			mysqli_query($con,$sql1);
+
         
 	        $sqlupdatestok = "UPDATE barang SET barang_stok='$jml_stok' WHERE barang_id='$barang'";
 	        mysqli_query($con,$sqlupdatestok);
         }
+
 		
     }
 

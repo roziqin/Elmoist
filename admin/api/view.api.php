@@ -65,6 +65,8 @@ if ($func=='dasboard-omset') {
 
 } elseif ($func=='list-transaksi-temp') {
     $query="SELECT * from transaksi_detail_temp, barang, kategori where transaksi_detail_temp_barang_id=barang_id and kategori_id=barang_kategori and transaksi_detail_temp_user='$user' ORDER BY transaksi_detail_temp_id";
+} elseif ($func=='list-pembelian-temp') {
+    $query="SELECT * from pembelian_detail_temp, barang, kategori where pembelian_detail_temp_barang_id=barang_id and kategori_id=barang_kategori and pembelian_detail_temp_user='$user' ORDER BY pembelian_detail_temp_id";
 } elseif ($func=='list-member-temp') {
 
     $query="SELECT * from member_temp, member, users where  member_temp_member_id=member_id and member_temp_therapist=id and member_temp_user_id='$user' ORDER BY member_temp_id DESC LIMIT 1";
@@ -191,6 +193,7 @@ if ($func=='dasboard-omset') {
 } elseif ($func=='laporan-nota') {
        
     $ket = "transaksi_tanggal"; 
+
     $tgl11 = date("Y-m-j", strtotime($_POST['start']));
     $tgl22 = date("Y-m-j", strtotime($_POST['end']));
     
@@ -202,6 +205,45 @@ if ($func=='dasboard-omset') {
     $nota = $_POST['notaid'];
 
     $query ="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$nota' ORDER BY transaksi_detail_id ASC";
+
+} elseif ($func=='laporan-pembelian') {
+       
+    $ket = "pembelian_tanggal"; 
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+    
+
+    $query ="SELECT * from pembelian, users WHERE pembelian_user=id and pembelian_tanggal BETWEEN '$tgl11' AND '$tgl22'  ";
+
+} elseif ($func=='cek-pembelian') {
+       
+    $nota = $_POST['notaid'];
+
+    $query ="SELECT * from pembelian_detail, barang where pembelian_detail_barang_id=barang_id and pembelian_detail_nota='$nota' ORDER BY pembelian_detail_id ASC";
+
+} elseif ($func=='laporan-member') {
+       
+    $member = $_POST['member'];
+    $ket = "transaksi_tanggal"; 
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+    
+
+    $query ="SELECT * from transaksi, users, member WHERE transaksi_member=member_id and transaksi_user=id and transaksi_member=$member and transaksi_tanggal BETWEEN '$tgl11' AND '$tgl22'  ";
+
+}  elseif ($func=='laporan-mutasi') {
+    
+    $query ="SELECT * from barang WHERE barang_set_stok=1 ORDER BY barang_nama ASC";
+
+}  elseif ($func=='laporan-stokmenu') {
+    
+    $menu = $_POST['menu'];
+    
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+
+
+    $query ="SELECT * FROM log_stok where barang='$menu' and tanggal BETWEEN '$tgl11' AND '$tgl22' ORDER BY tanggal ASC";
 
 }
 
@@ -300,6 +342,25 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
         $array_data[]=$data;
     }
 
+} elseif ($func=="cek-pembelian") {
+
+    $nota = $_POST['notaid'];
+    $sqlnot="SELECT * FROM pembelian, users where pembelian_user=id and pembelian_id='$nota' ";
+    $querynot=mysqli_query($con,$sqlnot);
+    $datanot=mysqli_fetch_assoc($querynot);
+
+    $total = $datanot['pembelian_total'];
+    $user = $datanot['name'];
+
+    $row_array['total'] = $total;
+    $row_array['user'] = $user;
+    $row_array['notaid'] = $nota;
+    array_push($array_data,$row_array);
+    while($data = mysqli_fetch_assoc($result))
+    {
+        $array_data[]=$data;
+    }
+
 } elseif ($func=="historymember") {
 
     $id = $_POST['id'];
@@ -328,6 +389,70 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
     while($data = mysqli_fetch_assoc($result))
     {
         $array_data['table'][]=$data;
+    }
+
+} elseif ($func=="laporan-mutasi") {
+
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+
+    while($baris = mysqli_fetch_assoc($result))
+    {
+        $barang_id = $baris['barang_id'];
+        $barang_nama = $baris['barang_nama'];
+        
+        $sqlawal="SELECT IFNULL( (SELECT stok_awal FROM log_stok where barang='$barang_id' and tanggal BETWEEN '$tgl11' AND '$tgl22' group by barang order by log_id),'0') as stok_awal ";
+        $queryawal=mysqli_query($con,$sqlawal);
+        $dataawal=mysqli_fetch_assoc($queryawal);
+
+        $sqlmasuk="SELECT IFNULL( (SELECT sum(stok_jumlah-stok_awal) as stok_masuk FROM log_stok where barang='$barang_id' and keterangan='tambah' and tanggal BETWEEN '$tgl11' AND '$tgl22' group by barang order by log_id),'0') as stok_masuk ";
+        $querymasuk=mysqli_query($con,$sqlmasuk);
+        $datamasuk=mysqli_fetch_assoc($querymasuk);
+
+        $sqlkurang="SELECT IFNULL( (SELECT sum(stok_awal-stok_jumlah) as stok_kurang FROM log_stok where barang='$barang_id' and keterangan='kurang' and tanggal BETWEEN '$tgl11' AND '$tgl22' group by barang order by log_id),'0') as stok_kurang ";
+        $querykurang=mysqli_query($con,$sqlkurang);
+        $datakurang=mysqli_fetch_assoc($querykurang);
+
+        $sqlkeluar="SELECT sum(transaksi_detail_jumlah) as jumlah FROM transaksi, transaksi_detail where transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id='$barang_id' and transaksi_tanggal BETWEEN '$tgl11' AND '$tgl22' group by transaksi_detail_barang_id ";
+        $querykeluar=mysqli_query($con,$sqlkeluar);
+        $datakeluar=mysqli_fetch_assoc($querykeluar);
+        
+        $row_array['barang_id'] = $barang_id;
+        $row_array['barang_nama'] = $barang_nama;
+        $row_array['stok_awal'] = $dataawal['stok_awal'];
+        $row_array['stok_masuk'] = $datamasuk['stok_masuk'];
+        $row_array['stok_keluar'] = $datakeluar['jumlah'] + $datakurang['stok_kurang'];
+        $row_array['stok_sisa'] = $dataawal['stok_awal'] + $datamasuk['stok_masuk'] - $datakeluar['jumlah'] - $datakurang['stok_kurang'];
+        array_push($array_data,$row_array);
+    }
+
+} elseif ($func=="laporan-stokmenu") {
+    $n=0;
+    while($baris = mysqli_fetch_assoc($result))
+    {
+        $tanggal = $baris['tanggal'];
+        $stok_awal = $baris['stok_awal'];
+        $stok_jumlah = $baris['stok_jumlah'];
+        $keterangan = $baris['keterangan'];
+
+
+        $row_array['tanggal'] = $tanggal;
+        if ($n==0) {
+            $row_array['stok_awal'] = $stok_awal;
+        } else {
+            $row_array['stok_awal'] = '-';
+        }
+        if ($keterangan=='tambah') {
+            $row_array['stok_masuk'] = $stok_jumlah - $stok_awal;
+            $row_array['stok_keluar'] = 0;
+        } else {
+            $row_array['stok_masuk'] = 0;
+            $row_array['stok_keluar'] = $stok_awal - $stok_jumlah;
+
+        }
+        $row_array['stok_sisa'] = $stok_jumlah;
+        array_push($array_data,$row_array);
+        $n++;
     }
 
 } else {

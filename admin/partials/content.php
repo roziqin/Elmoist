@@ -7,6 +7,10 @@
 
         include "components/transaksi.page.php";
 
+    } elseif ($_GET['menu']=='pembelian') {
+
+        include "components/pembelian.page.php";
+
     }  elseif ($_GET['menu']=='stok') {
 
         include "components/stok.page.php";

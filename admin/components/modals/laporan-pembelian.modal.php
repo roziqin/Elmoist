@@ -1,14 +1,11 @@
-<?php 
-  session_start();
-?>
 
 <!-------------- Modal tambah produk -------------->
 
-<div class="modal fade" id="modaldetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modaldetailpembelian" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Detail Nota</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Detail Pembelian</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -19,19 +16,13 @@
             <p class="nonota"></p>
           </div>
           <div class="col-md-6 col-md-offset-0">
-            <p class="nama"></p>
-          </div>
-          <div class="col-md-6 col-md-offset-0">
-            <p class="therapist"></p>
-          </div>
-          <div class="col-md-6 col-md-offset-0">
-            <p class="kasir"></p>
+            <p class="admin"></p>
           </div>
         </div>
-        <table id="listbarang" class="table table-bordered table-striped">
+        <table id="listbarangpembelian" class="table table-bordered table-striped">
           <thead>
           <tr>
-            <th>Nama Menu</th>
+            <th>Nama Barang</th>
             <th class="text-right">Harga</th>
             <th width="50px" style="padding-right: 8px; ">Jumlah</th>
             <th class="text-right">Total</th>
@@ -40,14 +31,6 @@
           <tbody>
           </tbody>
         </table>
-        <div class="row">
-          <div class="col-md-6">Subtotal</div>
-          <div class="col-md-6 text-right"><p class="subtotal"></p></div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">Potongan</div>
-          <div class="col-md-6 text-right"><p class="potongan"></p></div>
-        </div>
         <div class="row">
           <div class="col-md-6">Total</div>
           <div class="col-md-6 text-right"><p class="total"></p></div>
