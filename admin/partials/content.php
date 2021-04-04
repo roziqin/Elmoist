@@ -7,6 +7,10 @@
 
         include "components/transaksi.page.php";
 
+    } elseif ($_GET['menu']=='pembelian') {
+
+        include "components/pembelian.page.php";
+
     }  elseif ($_GET['menu']=='stok') {
 
         include "components/stok.page.php";
@@ -18,6 +22,10 @@
     } elseif ($_GET['menu']=='laporan') {
 
         include "components/laporan.page.php";
+
+    } elseif ($_GET['menu']=='member') {
+
+        include "components/member.page.php";
 
     } elseif ($_GET['menu']=='user') {
 
