@@ -36,12 +36,17 @@
 				        <a class="waves-effect grey-text" href="?menu=laporan" data-toggle="tooltip" title="Laporan"><i class="sv-slim-icon fas fa-chart-bar"></i>Laporan</a>
 			        </li>
 					<li class="menu-item">
-				        <a class="waves-effect grey-text" href="?menu=user" data-toggle="tooltip" title="User"><i class="sv-slim-icon fas fa-user-cog"></i>User</a>
-			        </li>
-					<li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=setting" data-toggle="tooltip" title="Setting"><i class="sv-slim-icon fas fa-tools"></i>Setting</a>
 			        </li>
-					<?php } ?>			        
+					<?php } ?>
+					<li class="menu-item">
+				        <a class="waves-effect grey-text" href="?menu=member" data-toggle="tooltip" title="Member"><i class="sv-slim-icon fas fa-address-book"></i>Member</a>
+			        </li>
+		      		<?php if ($_SESSION['role']=="admin" || $_SESSION['role']=="administrator") { ?>	
+					<li class="menu-item">
+				        <a class="waves-effect grey-text" href="?menu=user" data-toggle="tooltip" title="User"><i class="sv-slim-icon fas fa-user-cog"></i>User</a>
+			        </li>
+					<?php } ?>        
 			        <li class="menu-item">
 			        	<a class="waves-effect grey-text" href="?logout=1" data-toggle="tooltip" title="Logout"><i class="sv-slim-icon fas fa-sign-out-alt"></i>Logout</a>
 			        </li>

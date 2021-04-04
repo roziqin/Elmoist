@@ -23,6 +23,10 @@
 
         include "components/laporan.page.php";
 
+    } elseif ($_GET['menu']=='member') {
+
+        include "components/member.page.php";
+
     } elseif ($_GET['menu']=='user') {
 
         include "components/user.page.php";

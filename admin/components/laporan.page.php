@@ -1,10 +1,13 @@
 
-	<div class="container-fluid p-0 fadeIn animated">
-		<div class="row header-content pt-3 pb-0 info-color text-white">
-			<div class="col-md-12">
-				<h2 class=" border-bottom border-white mb-0 pb-2">Laporan</h2>
+	<div class="container-fluid p-0 fadeIn animated position-relative" style="z-index: 1;">
+		<div class="row header-content pt-3 pb-0 info-color text-white ">
+			<div class="col-md-9">
+				<h2>Laporan</h2>
 			</div>
-			<div class="col-md-12 pl-0 pr-0 ">
+			<div class="col-md-3">
+				<?php include 'partials/notifications.php'; ?>
+			</div>
+			<div class="col-md-12 pl-0 pr-0 border-top border-white mb-0 pt-2 ">
 				<ul class="nav">
 				    <li class="nav-item">
 				      <a class="nav-link waves-light active show" id="omset">Omset</a>

@@ -26,10 +26,11 @@ if($_GET['ket']=='submit-member'){
 	$usia = $_POST['ip-usia'];
 	$alamat = $_POST['ip-alamat'];
 	$tgllahir = date("Y-m-j", strtotime($_POST['ip-tgl-lahir']));
+	$tgl1 = date("j", strtotime($_POST['ip-tgl-lahir']));
 	$hp = $_POST['ip-hp'];
 	$gender = $_POST['ip-gender'];
 
-	$sql = "INSERT into member(member_no,member_rm,member_nama,member_alamat,member_tgl_lahir,member_usia,member_hp,member_gender)values('$nomember','$rm','$nama','$alamat','$tgllahir','$usia','$hp','$gender')";
+	$sql = "INSERT into member(member_no,member_rm,member_nama,member_alamat,member_tgl_lahir,member_usia,member_hp,member_gender,member_tanggal)values('$nomember','$rm','$nama','$alamat','$tgllahir','$usia','$hp','$gender','$tgl1')";
 
 	mysqli_query($con,$sql);
     

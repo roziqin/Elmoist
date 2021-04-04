@@ -4,6 +4,9 @@ $search = $_POST['search']['value']; // Ambil data yang di ketik user pada textb
 $limit = $_POST['length']; // Ambil data limit per page
 $start = $_POST['start']; // Ambil data start
 
+date_default_timezone_set('Asia/jakarta');
+$bln=date('m');
+
 if ($_GET['ket']=='produk') {
 
 	$sql = mysqli_query($con, "SELECT barang_id FROM barang, kategori where barang_kategori=kategori_id"); // Query untuk menghitung seluruh data siswa
@@ -33,6 +36,12 @@ if ($_GET['ket']=='produk') {
 	$sql = mysqli_query($con, "SELECT member_id FROM member"); // Query untuk menghitung seluruh data siswa
 	$sql_count = mysqli_num_rows($sql); // Hitung data yg ada pada query $sql
 	$query = "SELECT * FROM member where (member_nama LIKE '%".$search."%')";
+	
+} elseif ($_GET['ket']=='memberultah') {
+
+	$sql = mysqli_query($con, "SELECT member_id FROM member WHERE MONTH(member_tgl_lahir) = '".$bln."' "); // Query untuk menghitung seluruh data siswa
+	$sql_count = mysqli_num_rows($sql); // Hitung data yg ada pada query $sql
+	$query = "SELECT * FROM member where MONTH(member_tgl_lahir) = '".$bln."' and (member_nama LIKE '%".$search."%' or member_tanggal LIKE '%".$search."%')";
 	
 } elseif ($_GET['ket']=='stok') {
 
