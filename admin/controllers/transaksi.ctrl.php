@@ -202,7 +202,7 @@ if($_GET['ket']=='tambahmenu'){
 	$idcs = $_POST['idcs'];
 	$nama = $_POST['nama'];
 	
-	$sql = "INSERT INTO member_temp(member_temp_member_id,member_temp_user_id,member_temp_therapist,member_temp_nama,member_temp_dokter,member_temp_cs)values('$idmember','$user','$idtherapist','$nama','$iddokter','$idcs')";
+	$sql = "INSERT INTO member_temp(member_temp_member_id,member_temp_user_id,member_temp_therapist,member_temp_nama,member_temp_dokter,member_temp_cs,member_temp_member_rm)values('$idmember','$user','$idtherapist','$nama','$iddokter','$idcs','0')";
 
 	mysqli_query($con,$sql);
 

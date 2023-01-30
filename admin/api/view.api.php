@@ -129,7 +129,7 @@ if ($func=='dasboard-omset') {
     $tgl11 = date("Y-m", strtotime($_POST['start']));
     $tgl22 = date("Y-m", strtotime($_POST['end']));
 
-    $query ="SELECT barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and transaksi_bulan BETWEEN '$tgl11' AND '$tgl22' GROUP BY barang_id ORDER BY barang_nama ASC";
+    $query ="SELECT barang_nama, kategori_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang, kategori WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and barang_kategori=kategori_id and transaksi_bulan BETWEEN '$tgl11' AND '$tgl22' GROUP BY barang_id ORDER BY barang_nama ASC";
 
 }  elseif ($func=='laporan-stok') {
     

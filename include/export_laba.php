@@ -142,7 +142,7 @@ include '../config/database.php';
 
 		}
 		?>
-		<tr>
+		<!--<tr>
 			<td >Total</td>
 			<td align="right"><?php echo $tot; ?></td>
 			<td align="right"><?php echo $nn; ?></td>
@@ -152,7 +152,7 @@ include '../config/database.php';
 			<td align="right"><?php echo $totaltdokter; ?></td>
 			<td align="right"><?php echo $totdiskontran; ?></td>
 			<td align="right"><?php echo $totlabaakhir; ?></td>
-		</tr>
+		</tr>-->
 	</table>
 </body>
 </html>

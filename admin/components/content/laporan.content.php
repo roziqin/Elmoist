@@ -5,6 +5,11 @@ include '../modals/laporandetailmember.modal.php';
 $con = mysqli_connect("localhost","root","","salon_kecantikan");
 $ket = $_GET['ket'];
 
+function format_rupiah($angka){
+  $rupiah=number_format($angka,0,',','.');
+  return $rupiah;
+}
+
 if ($ket=='omset' || $ket=='kasir') {
 	if ($ket=='kasir') {
 		$kasir = '';
@@ -284,12 +289,14 @@ if ($ket=='omset' || $ket=='kasir') {
 				        <thead>
 				            <tr>
 	                            <th>item</th>
+	                            <th>kategori</th>
 	                            <th>jumlah</th>
 				            </tr>
 				        </thead>
 				        <tfoot>
 				            <tr>
 	                            <th>item</th>
+	                            <th>kategori</th>
 	                            <th>jumlah</th>
 				            </tr>
 				        </tfoot>
@@ -1405,35 +1412,35 @@ if ($ket=='omset' || $ket=='kasir') {
 				            deferRender: true,
 						    columns: [
 						        { data: 'transaksi_bulan' },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['total'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['laba'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['obat'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['treament'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['skincare'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['dokter'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['diskontran'].toString(), 'Rp. ');
 				                  }
 				                },
-				                { "width": "120px", render: function(data, type, full){
+				                { "width": "150px", render: function(data, type, full){
 				                   return formatRupiah(full['labaakhir'].toString(), 'Rp. ');
 				                  }
 				                }
@@ -1521,6 +1528,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					    data: data,
 					    columns: [
 					        { data: 'barang_nama' },
+					        { data: 'kategori_nama' },
 					        { data: 'jumlah' }
 					    ]
 					});
