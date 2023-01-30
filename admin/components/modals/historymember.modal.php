@@ -29,6 +29,9 @@
           <div class="col-md-6 col-md-offset-0">
             <p class="text-hp"></p>
           </div>
+          <div class="col-md-6 col-md-offset-0">
+            <p class="text-email"></p>
+          </div>
           <div class="col-md-12 col-md-offset-0">
             <p class="text-alamat"></p>
           </div>

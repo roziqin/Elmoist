@@ -16,6 +16,8 @@ if($_GET['ket']=='tambahmenu'){
 	$id = $_POST['barang_id'];	
 	$jumlah = $_POST['jumlah'];
 	$ket = $_POST['keterangan'];
+	$potongan = $_POST['potongan'];
+	$jenispotongan = $_POST['jenispotongan'];
 	$hargamanual = $_POST['hargamanual'];
 
 	$sql="SELECT * from barang where barang_id='$id'";
@@ -49,6 +51,16 @@ if($_GET['ket']=='tambahmenu'){
 		$diskon = $harga*$data['barang_diskon']/100;
 		if ($diskon!=0) {
 			$harga = $harga - $diskon;
+		}
+
+		if ($potongan!=0) {
+			if ($jenispotongan=='persen') {
+				$diskon = $harga*$potongan/100;
+				$harga = $harga - $diskon;
+			} else {
+				$harga = $harga - $potongan;
+				$diskon = $potongan;
+			}
 		}
 
 		$tot = $harga*$jumlah;
@@ -186,9 +198,11 @@ if($_GET['ket']=='tambahmenu'){
 
 	$idmember = $_POST['idmember'];
 	$idtherapist = $_POST['idtherapist'];
+	$iddokter = $_POST['iddokter'];
+	$idcs = $_POST['idcs'];
 	$nama = $_POST['nama'];
 	
-	$sql = "INSERT INTO member_temp(member_temp_member_id,member_temp_user_id,member_temp_therapist,member_temp_nama)values('$idmember','$user','$idtherapist','$nama')";
+	$sql = "INSERT INTO member_temp(member_temp_member_id,member_temp_user_id,member_temp_therapist,member_temp_nama,member_temp_dokter,member_temp_cs)values('$idmember','$user','$idtherapist','$nama','$iddokter','$idcs')";
 
 	mysqli_query($con,$sql);
 
@@ -210,8 +224,14 @@ if($_GET['ket']=='tambahmenu'){
 	$jumlahdiskon = $_POST['ip-jumlahdiskon'];
 	$tax = $_POST['ip-tax'];
 	$bayar = $_POST['ip-bayar'];
+	$debet = $_POST['ip-bayar-debet'];
+	$debetket = $_POST['ip-bayar-debet-ket'];
 
-	$kembalian = $bayar - $total;
+	$kembalian = $bayar + $debet - $total;
+
+	if ($paytype=='cashdebet') {
+		$paytype = 'cash';
+	}
 
 	$sql1="SELECT * from member_temp where member_temp_user_id='$user'";
 	$query1=mysqli_query($con,$sql1);
@@ -219,13 +239,15 @@ if($_GET['ket']=='tambahmenu'){
 	$member = $data1['member_temp_member_id'];
 	$namanonmember = $data1['member_temp_nama'];
 	$therapist = $data1['member_temp_therapist'];
+	$dokter = $data1['member_temp_dokter'];
+	$cs = $data1['member_temp_cs'];
 
-	$qcn= "SELECT MAX( transaksi_nota_print ) AS nota_print FROM transaksi where transaksi_type_bayar='$paytype'";
+	$qcn= "SELECT MAX( transaksi_nota_print ) AS nota_print FROM transaksi";
     $rcn=mysqli_query($con,$qcn);
     $dcn=mysqli_fetch_assoc($rcn);
     $nota_print = $dcn['nota_print']+1;
 
-	$sql = "INSERT INTO transaksi (transaksi_nota_print,transaksi_tanggal,transaksi_bulan,transaksi_waktu,transaksi_member,transaksi_total,transaksi_diskon,transaksi_tax,transaksi_tax_service,transaksi_bayar,transaksi_type_bayar,transaksi_user,transaksi_therapist,transaksi_nama,transaksi_ket) VALUES ('$nota_print','$tgl','$bln','$wkt','$member','$total','$jumlahdiskon','$tax','0','$bayar','$paytype','$user','$therapist','$namanonmember','')" ;
+	$sql = "INSERT INTO transaksi (transaksi_nota_print,transaksi_tanggal,transaksi_bulan,transaksi_waktu,transaksi_member,transaksi_total,transaksi_diskon,transaksi_tax,transaksi_tax_service,transaksi_bayar,transaksi_type_bayar,transaksi_bayar_debet,transaksi_bayar_debet_ket,transaksi_user,transaksi_therapist,transaksi_dokter,transaksi_cs,transaksi_nama,transaksi_ket) VALUES ('$nota_print','$tgl','$bln','$wkt','$member','$total','$jumlahdiskon','$tax','0','$bayar','$paytype','$debet','$debetket','$user','$therapist','$dokter','$cs','$namanonmember','')" ;
 
 	mysqli_query($con,$sql);
 
@@ -293,6 +315,8 @@ if($_GET['ket']=='tambahmenu'){
 }  elseif($_GET['ket']=='tutupkasir'){
 
 	$uangfisik = $_POST['uangfisik'];
+	$cetak = $_POST['cetak'];
+    $_SESSION['cetakitem']=$cetak;
 	//$uangfisik = 200000;
 
 	$sqlcek="SELECT count(*) as jml from validasi where validasi_user_id='$user' and validasi_tanggal='$tgl'";
@@ -317,24 +341,35 @@ if($_GET['ket']=='tambahmenu'){
 		$query2=mysqli_query($con,$sql2);
 		$data2=mysqli_fetch_assoc($query2);
 
+		$query11=mysqli_query($con,"SELECT count(transaksi_id) as jumlah, sum(transaksi_bayar_debet) as total, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$user' group by transaksi_tanggal ");
+
+		$datadebet1=mysqli_fetch_assoc($query11);
+		$ddebet = isset($data2['debet']) ? $data2['debet'] : '0';
+		$omsetdebet = $ddebet+$datadebet1['total'];
+
+
 		$sql3="SELECT count(transaksi_id) as jumlah, sum(transaksi_total) as cash, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$user' and transaksi_type_bayar='Cash' group by transaksi_tanggal";
 		$query3=mysqli_query($con,$sql3);
 		$data3=mysqli_fetch_assoc($query3);
+		$dcash = isset($data3['cash']) ? $data3['cash'] : '0';
+		$omsetcash = $dcash-$datadebet1['total'];
 
-		$a="INSERT into validasi(validasi_tanggal,validasi_waktu,validasi_user_id,validasi_user_nama,validasi_jumlah,validasi_cash,validasi_debet,validasi_omset)values('$tgl','$wkt','$user','$usernama','$uangfisik','$data3[cash]','$data2[debet]','$data1[total]')";
-			mysqli_query($con,$a);
 
-		if ($data2['debet']=='') {
+		if ($ddebet=='') {
 			$totdebet = 0;
 		} else {
-			$totdebet = $data2['debet'];
+			$totdebet = $omsetdebet;
 		}
 
-		if ($data3['cash']=='') {
+		if ($dcash=='') {
 			$totcash = 0;
 		} else {
-			$totcash = $data3['cash'];
+			$totcash = $omsetcash;
 		}
+
+
+		$a="INSERT into validasi(validasi_tanggal,validasi_waktu,validasi_user_id,validasi_user_nama,validasi_jumlah,validasi_cash,validasi_debet,validasi_omset)values('$tgl','$wkt','$user','$usernama','$uangfisik','$totcash','$totdebet','$data1[total]')";
+		mysqli_query($con,$a);
 
 		$array_datas['omset'] = $data1['total'];
 		$array_datas['debet'] = $totdebet;

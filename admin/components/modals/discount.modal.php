@@ -43,6 +43,8 @@
 
   <script type="text/javascript">
       
+
+      $('.mdb-select').materialSelect({destroy:true});
       $('.mdb-select').materialSelect();
       $('#price').priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '.', centsLimit: 0 });
 

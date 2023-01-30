@@ -44,7 +44,7 @@ include '../config/database.php';
 	<table border="1">
 		<tr>
 			<th>Tanggal</th>
-			<th>No Nota</th>
+			<th>No Faktur</th>
 			<th>Admin</th>
 			<th>Total</th>
 		</tr>
@@ -66,7 +66,7 @@ include '../config/database.php';
 			?>
 			<tr>
 				<td><?php echo $datatea["pembelian_tanggal"]; ?></td>
-				<td><?php echo $datatea["pembelian_id"]; ?></td>
+				<td><?php echo $datatea["pembelian_no_faktur"]; ?></td>
 				<td><?php echo $datatea["name"]; ?></td>
 				<td align="right"><?php echo $datatea["pembelian_total"]; ?></td>
 			</tr>

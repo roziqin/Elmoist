@@ -7,8 +7,11 @@ $tgl=date('Y-m-j');
 $array_datas = array();
 	
 if($_GET['ket']=='submit-member'){
-	$rm = $_POST['ip-rm'];
+	$sql1="SELECT MAX(member_rm) as norm from member ";
+	$query1=mysqli_query($con,$sql1);
+	$data1=mysqli_fetch_assoc($query1);
 
+	$rm = $data1['norm']+1;
 
 	$nama = $_POST['ip-nama'];
 	$a = substr($nama,0,1);
@@ -28,9 +31,10 @@ if($_GET['ket']=='submit-member'){
 	$tgllahir = date("Y-m-j", strtotime($_POST['ip-tgl-lahir']));
 	$tgl1 = date("j", strtotime($_POST['ip-tgl-lahir']));
 	$hp = $_POST['ip-hp'];
+	$email = $_POST['ip-email'];
 	$gender = $_POST['ip-gender'];
 
-	$sql = "INSERT into member(member_no,member_rm,member_nama,member_alamat,member_tgl_lahir,member_usia,member_hp,member_gender,member_tanggal)values('$nomember','$rm','$nama','$alamat','$tgllahir','$usia','$hp','$gender','$tgl1')";
+	$sql = "INSERT into member(member_no,member_rm,member_nama,member_alamat,member_tgl_lahir,member_usia,member_hp,member_gender,member_tanggal,member_email)values('$nomember','$rm','$nama','$alamat','$tgllahir','$usia','$hp','$gender','$tgl1','$email')";
 
 	mysqli_query($con,$sql);
     
@@ -70,8 +74,9 @@ if($_GET['ket']=='submit-member'){
 	$tgllahir = date("Y-m-j", strtotime($_POST['ip-tgl-lahir']));
 	$hp = $_POST['ip-hp'];
 	$gender = $_POST['ip-gender'];
+	$email = $_POST['ip-email'];
 
-	$sql="UPDATE member set member_no='$nomember', member_rm='$rm', member_nama='$nama', member_alamat='$alamat', member_tgl_lahir='$tgllahir',member_usia='$usia' ,member_hp='$hp', member_gender='$gender' where member_id='$id'";
+	$sql="UPDATE member set member_no='$nomember', member_nama='$nama', member_alamat='$alamat', member_tgl_lahir='$tgllahir',member_usia='$usia' ,member_hp='$hp', member_gender='$gender', member_email='$email' where member_id='$id'";
 	mysqli_query($con,$sql);
 	
 } elseif($_GET['ket']=='remove-member'){

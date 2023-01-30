@@ -6,120 +6,140 @@ include '../../../include/format_rupiah.php';
 $kond = $_GET['kond'];
 $userid = $_SESSION['login_user'];
 
-$q= "SELECT * from member_temp where member_temp_user_id='$userid' ORDER BY member_temp_id DESC LIMIT 1";
+$q= "SELECT * from pembelian_temp where pembelian_temp_user_id='$userid' ORDER BY pembelian_temp_id DESC LIMIT 1";
 $r=mysqli_query($con, $q);
 $d=mysqli_fetch_assoc($r);
 
-if ($kond=='home' || $kond=='') { 
-    ?>
-    <div class="classic-tabs">
-        <ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
-            <?php
-                $n=0;
-                $sql="SELECT * from jenis ORDER BY jenis_id";
-                $query=mysqli_query($con, $sql);
-                while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-                    if ($n==0) {
-                        $ket = 'active show';
-                        $ket1 = 'true';
-                        $ket2 = 'ml-0';
-                    } else {
-                        $ket = '';
-                        $ket1 = 'false';
-                        $ket2 = '';
-
-                    }
-                    //if($data1['jenis_slug']=='obat' || $data1['jenis_slug']=='skincare' || $data1['jenis_slug']=='facial') {
-                    ?>
-                        <li class="nav-item <?php echo $ket2; ?>">
-                            <a class="nav-link  waves-light <?php echo $ket; ?>" id="profile-tab-classic" data-toggle="tab" href="#<?php echo $data1['jenis_slug']; ?>"
-                            role="tab" aria-controls="<?php echo $data1['jenis_slug']; ?>" aria-selected="<?php echo $ket1; ?>"><?php echo $data1['jenis_nama']; ?></a>
-                        </li>
-                    <?php
-                    $n++;
-                    //}
-
-                }
-
-            ?>
-        </ul>
-        <div class="tab-content" id="myClassicTabContent">
-            <?php
-                $n=0;
-                $sql="SELECT * from kategori, jenis WHERE kategori_jenis=jenis_id ORDER BY jenis_id";
-                $query=mysqli_query($con, $sql);
-                while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-                    if ($n==0) {
-                        $ket='show active';
-                    } else {
-                        $ket='';
-
-                    }
-
-                    //if($data1['jenis_slug']=='obat' || $data1['jenis_slug']=='skincare') {
-                    ?>
-                        <div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['jenis_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['jenis_slug']; ?>-tab">
-                            <div class="row">
-                                <table id="example-<?php echo $data1['jenis_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>nama item</th>
-                                            <th>kategori</th>
-                                            <th>stok</th>
-                                            <th>harga</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                        $sqlbarang="SELECT * from barang, kategori, jenis where barang_kategori=kategori_id and kategori_jenis=jenis_id and jenis_id='$data1[jenis_id]'";
-                                        $querybarang=mysqli_query($con, $sqlbarang);
-                                        while ($databarang=mysqli_fetch_array($querybarang, MYSQLI_ASSOC)) {
-                                            if ($databarang['barang_image']=='') {
-                                                $image = 'default.jpg';
-                                            } else {
-                                                $image = $databarang['barang_image'];
-                                            }
-
-                                            if ($databarang['barang_disable']==1) {
-                                                $disable = 'disable';
-                                            } else {
-                                                $disable = '';
-                                            }
-
-                                            $harga = $databarang['barang_harga_beli'];
-
-                                            if ($databarang['barang_set_stok']!=0) {                                                    
-                                                ?>
-                                                <tr>
-                                                    <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
-                                                    <td><strong class=""><?php echo $databarang['kategori_nama']; ?></strong></td>
-                                                    <td><span class="stok <?php echo $stok_status; ?>"><?php echo $databarang['barang_stok']; ?></span></td>
-                                                    <td>Rp. <?php echo format_rupiah($harga); ?></td>
-                                                    <td>
-                                                        <button class="btn btn-default pilihmenu m-0" data-id="<?php echo $databarang['barang_id']; ?>">Pilih <i class="fas fa-magic ml-1"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                                
-                                            }    
-                                        }
-                                    ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                    <?php
-                    $n++;
-                    //}
-                }
-
-            ?>
+if ($kond=='home' || $kond=='') {if ($d==null) { ?>
+        <div class="row p-3 row-jumlah justify-content-md-center">
+            <div class="col-md-6 mt-5">
+                <h3 class="text-center mb-5">Pembelian Barang</h3>
+                <form method="post" class="form-member">
+                    
+                    <div class="md-form mb-3">
+                        <input type="text" id="defaultForm-nofaktur" class="form-control" name="ip-nofaktur">
+                        <label for="defaultForm-nofaktur">No Faktur</label>
+                    </div>
+                    <button class="btn btn-primary inputfaktur float-right">Proses</button>
+                </form>
+                <div class="clear"></div>
+                <div class="col-md-12 text-center mt-5">
+                    <button type="button" class="btn btn-default waves-effect mr-2" id="ceknota"><i class="fas fa-clipboard-check mr-2"></i>Cek Faktur</button>
+                </div>
+            </div>
         </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.mdb-select').materialSelect();
+            });
+        </script>
+    <?php } else { ?>
+        <div class="classic-tabs">
+            <ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
+                <?php
+                    $n=0;
+                    $sql="SELECT * from jenis ORDER BY jenis_id";
+                    $query=mysqli_query($con, $sql);
+                    while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+                        if ($n==0) {
+                            $ket = 'active show';
+                            $ket1 = 'true';
+                            $ket2 = 'ml-0';
+                        } else {
+                            $ket = '';
+                            $ket1 = 'false';
+                            $ket2 = '';
 
-    </div>
-	
+                        }
+                        //if($data1['jenis_slug']=='obat' || $data1['jenis_slug']=='skincare' || $data1['jenis_slug']=='facial') {
+                        ?>
+                            <li class="nav-item <?php echo $ket2; ?>">
+                                <a class="nav-link  waves-light <?php echo $ket; ?>" id="profile-tab-classic" data-toggle="tab" href="#<?php echo $data1['jenis_slug']; ?>"
+                                role="tab" aria-controls="<?php echo $data1['jenis_slug']; ?>" aria-selected="<?php echo $ket1; ?>"><?php echo $data1['jenis_nama']; ?></a>
+                            </li>
+                        <?php
+                        $n++;
+                        //}
+
+                    }
+
+                ?>
+            </ul>
+            <div class="tab-content" id="myClassicTabContent">
+                <?php
+                    $n=0;
+                    $sql="SELECT * from kategori, jenis WHERE kategori_jenis=jenis_id ORDER BY jenis_id";
+                    $query=mysqli_query($con, $sql);
+                    while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+                        if ($n==0) {
+                            $ket='show active';
+                        } else {
+                            $ket='';
+
+                        }
+
+                        //if($data1['jenis_slug']=='obat' || $data1['jenis_slug']=='skincare') {
+                        ?>
+                            <div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['jenis_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['jenis_slug']; ?>-tab">
+                                <div class="row">
+                                    <table id="example-<?php echo $data1['jenis_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>nama item</th>
+                                                <th>kategori</th>
+                                                <th>stok</th>
+                                                <th>harga</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                            $sqlbarang="SELECT * from barang, kategori, jenis where barang_kategori=kategori_id and kategori_jenis=jenis_id and jenis_id='$data1[jenis_id]'";
+                                            $querybarang=mysqli_query($con, $sqlbarang);
+                                            while ($databarang=mysqli_fetch_array($querybarang, MYSQLI_ASSOC)) {
+                                                if ($databarang['barang_image']=='') {
+                                                    $image = 'default.jpg';
+                                                } else {
+                                                    $image = $databarang['barang_image'];
+                                                }
+
+                                                if ($databarang['barang_disable']==1) {
+                                                    $disable = 'disable';
+                                                } else {
+                                                    $disable = '';
+                                                }
+
+                                                $harga = $databarang['barang_harga_beli'];
+
+                                                if ($databarang['barang_set_stok']!=0) {                                                    
+                                                    ?>
+                                                    <tr>
+                                                        <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
+                                                        <td><strong class=""><?php echo $databarang['kategori_nama']; ?></strong></td>
+                                                        <td><span class="stok <?php echo $stok_status; ?>"><?php echo $databarang['barang_stok']; ?></span></td>
+                                                        <td>Rp. <?php echo format_rupiah($harga); ?></td>
+                                                        <td>
+                                                            <button class="btn btn-default pilihmenu m-0" data-id="<?php echo $databarang['barang_id']; ?>">Pilih <i class="fas fa-magic ml-1"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                    
+                                                }    
+                                            }
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        <?php
+                        $n++;
+                        //}
+                    }
+                ?>
+            </div>
+        </div>
+    <?php } ?>
 <?php } elseif ($kond=='jumlah') { ?>
     <div class="row p-3 row-jumlah justify-content-md-center">
     	<div class="col-md-6 mt-5">
@@ -138,10 +158,27 @@ if ($kond=='home' || $kond=='') {
                     <input type="text" id="hargamanual" class="form-control" name="hargamanual" >
                     <label for="hargamanual">Harga Manual</label>
                 </div>
+                <div class="md-form mb-4">
+                    <select class="mdb-select md-form" id="jenispotongan" name="jenispotongan" searchable="Search here..">
+                        <option value="">Pilih Diskon</option>
+                        <option value="potongan">Potongan</option>
+                        <option value="persen">Persen</option>
+                    </select>
+                </div>
+                <div class="md-form mt-4">
+                    <input type="text" id="potongan" class="form-control" name="potongan" >
+                    <label for="hargamanual">Jumlah Diskon</label>
+                </div>
 				<button class="btn btn-primary prosesmenu float-right">Proses</button>
 	    	</form>
 	    </div>
     </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.mdb-select').materialSelect({destroy:true});
+                $('.mdb-select').materialSelect();
+            });
+        </script>
 <?php } elseif ($kond=='pembeliansukses') { ?>
     <input type="hidden" id="ketnota" value="<?php echo $_SESSION['no-nota']; ?>" name="ketnota">   
     <div class="row p-3 row-jumlah justify-content-md-center">
@@ -183,36 +220,31 @@ if ($kond=='home' || $kond=='') {
 <?php }  elseif ($kond=='ceknota') { ?>
     <div class="row p-3 row-jumlah justify-content-md-center">
         <div class="col-md-6 mt-5">
-            <h3 class="text-center mb-5">Cek Nota</h3>
+            <h3 class="text-center mb-5">Cek Faktur</h3>
             <form method="post" class="form-jumlah"> 
                 <div class="md-form mb-3">
-                    <input type="text" id="idnonota" class="form-control" name="idnonota" >
-                    <label for="idnonota">No Nota</label>
+                    <input type="text" id="idnofaktur" class="form-control" name="idnofaktur" >
+                    <label for="idnonota">No Faktur</label>
                 </div>
                 <button class="btn btn-primary prosesceknota float-right">Proses</button>
                 <button class="btn btn-danger kembali float-right">Kembali</button>
             </form>
         </div>
         <div class="clear"></div>
-        <?php if ($_GET['nonota']!='') { 
-            $nota = $_GET['nonota'];
-            $sqlnot="SELECT * FROM pembelian, member where pembelian_member=member_id AND pembelian_id='$nota' ";
+        <?php if ($_GET['nofaktur']!='') { 
+            $nofaktur = $_GET['nofaktur'];
+            $sqlnot="SELECT * FROM pembelian where pembelian_no_faktur='$nofaktur' ";
             $querynot=mysqli_query($con,$sqlnot);
             $datanot=mysqli_fetch_assoc($querynot);
             $diskon = $datanot['pembelian_diskon'];
+            $nota = $datanot['pembelian_id'];
             $total = $datanot['pembelian_total'];
         ?>
         <div class="col-md-12 p-5">
 
             <input type="hidden" id="ip-nota" class="form-control" name="ip-nota" value="<?php echo $nota; ?>" >
-            <h3>Cek Nota pembelian : <?php echo $nota; ?></h3>
+            <h3>Cek Faktur pembelian : <?php echo $nofaktur; ?></h3>
             <div class="row">
-                <div class="col-md-6 col-md-offset-0">
-                    <h4>Nama : <?php echo $datanot['member_nama'];?></h4>
-                </div>
-                <div class="col-md-6 col-md-offset-0 text-right">
-                    <h4>Alamat : <?php echo $datanot['member_alamat'];?></h4>
-                </div>
                 <table id="listbarang" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -228,7 +260,7 @@ if ($kond=='home' || $kond=='') {
                         $queryte1 = mysqli_query($con,$sqlte1);
                         while($datatea = mysqli_fetch_assoc($queryte1)) {
                             $jumlah = $datatea["pembelian_detail_jumlah"];
-                            $harga = $datatea["barang_harga_jual"];
+                            $harga = $datatea["barang_harga_beli"];
                         ?>
                             <tr>
                                 <td><?php echo $datatea["barang_nama"]; ?></td>
@@ -297,25 +329,21 @@ if ($kond=='home' || $kond=='') {
 <?php if ($kond=='home' || $kond=='search' || $kond=='item' || $kond=='' ) { ?>
 
 <script type="text/javascript">
-    $('.pilihmember').on('click',function(e){
+    $('.inputfaktur').on('click',function(e){
         e.preventDefault();
-        var idmember = $('#defaultForm-member').val();
-        var idtherapist = $('#defaultForm-therapist').val();
-        var nama = $('#defaultForm-nama').val();
+        var nofaktur = $('#defaultForm-nofaktur').val();
 
 
         $.ajax({
             type:'POST',
-            url: "controllers/pembelian.ctrl.php?ket=pilihmember",
+            url: "controllers/pembelian.ctrl.php?ket=inputfaktur",
             dataType: "json",
             data:{
-                idmember:idmember,
-                idtherapist:idtherapist,
-                nama:nama
+                nofaktur:nofaktur
             },
             success:function(data){
                 window.location.reload();
-                $('.container__load').load('components/content/pembelian.content.php?kond=home');
+                //$('.container__load').load('components/content/pembelian.content.php?kond=home');
             }
         }); 
     });
@@ -359,15 +387,53 @@ if ($kond=='home' || $kond=='') {
 
 	});
 
+    $('#ceknota').on('click',function(){
+        $('.container__load').load('components/content/pembelian.content.php?kond=ceknota&nofaktur=');
+    });
+
 
 </script>
 
-<?php } elseif ($kond=='kembalian') { ?>
+<?php } elseif ($kond=='pembeliansukses') { ?>
     <script type="text/javascript">
         $('.pembelianbaru').on('click',function(){
             window.location.reload();
             $('.container__load').load('components/content/pembelian.content.php?kond=home');
         });
+    </script>
+
+<?php } elseif ($kond=='ceknota' || $kond=='tutupkasir') { ?>
+    <script type="text/javascript">
+
+        $('.kembali').on('click',function(e){
+            e.preventDefault();
+            var idnonota = $('#idnonota').val();
+            $('.container__load').load('components/content/pembelian.content.php?kond=home');
+        });
+
+        $('.prosesceknota').on('click',function(e){
+            e.preventDefault();
+            var idnonota = $('#idnofaktur').val();
+            $('.container__load').load('components/content/pembelian.content.php?kond=ceknota&nofaktur='+idnonota);
+        });
+
+        $('#btn-printulang').on('click',function(e){
+            var idnonota = $('#ip-nota').val();
+            e.preventDefault();
+            
+            windowList = new Array('../print/nota-pembelian.print.php?id='+idnonota);
+            i = 0;
+            windowName = "window";
+            windowInterval = window.setInterval(function(){
+              window.open(windowList[i],windowName+i,'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,titlebar=no');
+              i++;
+              if(i==windowList.length){
+                window.clearInterval(windowInterval);
+              }
+            },1000);
+        });
+
+                                    
     </script>
 
 <?php } elseif ($kond=='jumlah') { ?>
@@ -568,7 +634,20 @@ if ($kond=='home') { ?>
 				});
 	        }
 	    });
-
+        $.ajax({
+            type:'POST',
+            url:'api/view.api.php?func=list-pembelian-faktur-temp',
+            dataType: "json",
+            success:function(data){
+                console.log(data)
+                $('#listmember table').empty();
+                var nama = ''; 
+                if (data!='') {
+                    $('#listmember table').append('<tr><td><h6>No Faktur: '+data[0].pembelian_temp_no_faktur+'</h6></td><td class="text-right"></td></tr>');
+                    //$('#bayar').removeAttr("disabled");
+                }
+            }
+        });
 
 	</script>
 

@@ -1,7 +1,9 @@
 <?php 
 	date_default_timezone_set('Asia/jakarta');
 	$tgl=date('m-j');
-	$q= "SELECT count(*) as jumlah FROM member where member_tgl_lahir LIKE '%$tgl%'";
+	$day=date('j');
+	$month=date('m');
+	$q= "SELECT count(*) as jumlah FROM member where MONTH(member_tgl_lahir) = '$month' and DAY(member_tgl_lahir) = '$day' ";
 	$r=mysqli_query($con, $q);
 	$d=mysqli_fetch_assoc($r);
 
@@ -26,7 +28,7 @@
 	      		</div>
 	      	</a>
         	<?php 
-        	$query= "SELECT member_nama, member_hp FROM member where member_tgl_lahir LIKE '%$tgl%'";
+        	$query= "SELECT member_nama, member_hp FROM member where MONTH(member_tgl_lahir) = '$month' and DAY(member_tgl_lahir) = '$day'";
 			$result=mysqli_query($con, $query);
 			while ($data=mysqli_fetch_assoc($result)){
 			?>

@@ -24,8 +24,11 @@
 					<?php } ?>
 					<li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=transaksi" data-toggle="tooltip" title="Transaksi"><i class="sv-slim-icon fas fa-shopping-basket"></i>Transaksi</a>
-					</li>
+				    </li>
 		      		<?php if ($_SESSION['role']=="admin" || $_SESSION['role']=="administrator") { ?>
+					<li class="menu-item">
+				        <a class="waves-effect grey-text" href="?menu=pembelian" data-toggle="tooltip" title="Pembelian"><i class="sv-slim-icon fas fa-shopping-cart"></i>Pembelian</a>
+					</li>
 					<li class="menu-item">
 				        <a class="waves-effect grey-text" href="?menu=produk" data-toggle="tooltip" title="Produk"><i class="sv-slim-icon fas fa-box-open"></i>Produk</a>
 			        </li>

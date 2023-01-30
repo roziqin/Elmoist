@@ -13,7 +13,7 @@
         <div class="modal-body mx-3">
             <input type="hidden" id="defaultForm-id" name="ip-id">
             <input type="hidden" id="defaultForm-no" name="ip-no">
-            <div class="md-form mb-0">
+            <div class="md-form mb-0 hidden">
               <input type="text" id="defaultForm-rm" class="form-control validate mb-3" name="ip-rm">
               <label for="defaultForm-rm">No RM</label>
             </div>
@@ -26,7 +26,7 @@
               <label for="defaultForm-alamat">Alamat</label>
             </div>
             <div class="md-form mb-0">
-              <input placeholder="Tanggal Lahir" type="text" id="defaultForm-tgl-lahir" class="form-control datepicker" name="ip-tgl-lahir">
+              <input placeholder="Tanggal Lahir" type="text" id="defaultForm-tgl-lahir" class="form-control" name="ip-tgl-lahir">
             </div>
             <div class="md-form mb-0">
               <input type="text" id="defaultForm-usia" class="form-control validate mb-3" name="ip-usia">
@@ -35,6 +35,10 @@
             <div class="md-form mb-0">
               <input type="text" id="defaultForm-hp" class="form-control validate mb-3" name="ip-hp">
               <label for="defaultForm-hp">No. HP</label>
+            </div>
+            <div class="md-form mb-0">
+              <input type="text" id="defaultForm-email" class="form-control validate mb-3" name="ip-email">
+              <label for="defaultForm-email">Email</label>
             </div>
             <div class="md-form mb-0">
                 <select class="mdb-select md-form" id="defaultForm-gender" name="ip-gender">
@@ -63,129 +67,69 @@
 
       //$('#defaultForm-gender').materialSelect();
 
-      $('.datepicker').pickadate({
+      $('#defaultForm-tgl-lahir').datepicker({
+        format: 'yyyy-mm-dd',
         weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         showMonthsShort: true
       })
       $("#submit-member").click(function(e){
         e.preventDefault();
-        var id = $("#modalmember #defaultForm-id").val();
-        var rm = $("#modalmember #defaultForm-rm").val();
+        
+        var data = $('#modalmember .form-member').serialize();
+        
         $.ajax({
           type: 'POST',
-          dataType: "json",
-          url: "controllers/member.ctrl.php?ket=cek-rm-member&rm="+rm+"&id="+id+"",
-          success: function(data) {
-            if (data[0]=="kosong") {
-              var data = $('#modalmember .form-member').serialize();
-              
-              $.ajax({
-                type: 'POST',
-                url: "controllers/member.ctrl.php?ket=submit-member",
-                data: data,
-                success: function() {
-                  
-                  console.log("sukses edit")
-                  $('#table-member').DataTable().ajax.reload();
-                  $("#modalmember #defaultForm-id").val('');
-                  $("#modalmember #defaultForm-no").val('');
-                  $("#modalmember #defaultForm-rm").val('');
-                  $("#modalmember #defaultForm-nama").val('');
-                  $("#modalmember #defaultForm-alamat").val('');
-                  $("#modalmember #defaultForm-hp").val('');
-                  $("#modalmember #defaultForm-usia").val('');
-                  $("#modalmember #defaultForm-gender").val('');
-                  $("#modalmember #defaultForm-tgl-lahir").val('');
-                  $('#modalmember').modal('toggle');    
-                  $('.container__load').load('components/content/member.content.php');
-                }
-              });
-              
-            } else {
-              alert("No. Rm Sudah dipakai, gunakan No. yang lain");
-
-            }
-
+          url: "controllers/member.ctrl.php?ket=submit-member",
+          data: data,
+          success: function() {
+            
+            console.log("sukses edit")
+            $('#table-member').DataTable().ajax.reload();
+            $("#modalmember #defaultForm-id").val('');
+            $("#modalmember #defaultForm-no").val('');
+            $("#modalmember #defaultForm-rm").val('');
+            $("#modalmember #defaultForm-nama").val('');
+            $("#modalmember #defaultForm-alamat").val('');
+            $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-email").val('');
+            $("#modalmember #defaultForm-usia").val('');
+            $("#modalmember #defaultForm-gender").val('');
+            $("#modalmember #defaultForm-tgl-lahir").val('');
+            $('#modalmember').modal('toggle');    
+            $('.container__load').load('components/content/member.content.php?ket=member');
           }
         });
-      });   
+              
+           
+      });    
 
 
       $("#update-member").click(function(e){
         e.preventDefault();
-        var id = $("#modalmember #defaultForm-id").val();
-        var rm = $("#modalmember #defaultForm-rm").val();
-        $.ajax({
-          type: 'POST',
-          dataType: "json",
-          url: "controllers/member.ctrl.php?ket=cek-rm-member&rm="+rm+"&id="+id+"",
-          success: function(data) {
-            if (data[0]=="kosong") {
-              var data = $('#modalmember .form-member').serialize();
-              
-              $.ajax({
-                type: 'POST',
-                url: "controllers/member.ctrl.php?ket=update-member",
-                data: data,
-                success: function() {
-                  
-                  console.log("sukses edit")
-                  $('#table-member').DataTable().ajax.reload();
-                  $("#modalmember #defaultForm-id").val('');
-                  $("#modalmember #defaultForm-no").val('');
-                  $("#modalmember #defaultForm-rm").val('');
-                  $("#modalmember #defaultForm-nama").val('');
-                  $("#modalmember #defaultForm-alamat").val('');
-                  $("#modalmember #defaultForm-hp").val('');
-                  $("#modalmember #defaultForm-usia").val('');
-                  $("#modalmember #defaultForm-gender").val('');
-                  $("#modalmember #defaultForm-tgl-lahir").val('');
-                  $('#modalmember').modal('toggle');    
-                  $('.container__load').load('components/content/member.content.php');
-                }
-              });
-              
-            } else {
-              alert("No. Rm Sudah dipakai, gunakan No. yang lain");
-
-            }
-
-          }
-        });
-        
-        
-      
-        /*
         var data = $('#modalmember .form-member').serialize();
+        
         $.ajax({
           type: 'POST',
           url: "controllers/member.ctrl.php?ket=update-member",
           data: data,
           success: function() {
-            console.log(data[0]);
             
-            if (data[0]=="ok") {
-              console.log("sukses edit")
-              $('#table-member').DataTable().ajax.reload();
-              $("#modalmember #defaultForm-id").val('');
-              $("#modalmember #defaultForm-no").val('');
-              $("#modalmember #defaultForm-rm").val('');
-              $("#modalmember #defaultForm-nama").val('');
-              $("#modalmember #defaultForm-alamat").val('');
-              $("#modalmember #defaultForm-hp").val('');
-              $("#modalmember #defaultForm-usia").val('');
-              $("#modalmember #defaultForm-gender").val('');
-              $("#modalmember #defaultForm-tgl-lahir").val('');
-              $('#modalmember').modal('toggle');
-            } else {
-              alert("No. Rm Sudah dipakai, gunakan No. yang lain");
-              return false;
-            }
-            
-            
+            console.log("sukses edit")
+            $('#table-member').DataTable().ajax.reload();
+            $("#modalmember #defaultForm-id").val('');
+            $("#modalmember #defaultForm-no").val('');
+            $("#modalmember #defaultForm-rm").val('');
+            $("#modalmember #defaultForm-nama").val('');
+            $("#modalmember #defaultForm-alamat").val('');
+            $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-email").val('');
+            $("#modalmember #defaultForm-usia").val('');
+            $("#modalmember #defaultForm-gender").val('');
+            $("#modalmember #defaultForm-tgl-lahir").val('');
+            $('#modalmember').modal('toggle');    
+            $('.container__load').load('components/content/member.content.php?ket=member');
           }
         });
-        */
       }); 
       
     });

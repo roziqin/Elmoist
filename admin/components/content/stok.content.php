@@ -5,6 +5,7 @@
                 <th>nama</th>
                 <th>stok</th>
                 <th>set stok</th>
+                <th>tanggal input stok</th>
                 <th></th>
             </tr>
         </thead>
@@ -13,6 +14,7 @@
                 <th>nama</th>
                 <th>stok</th>
                 <th>set stok</th>
+                <th>tanggal input stok</th>
                 <th></th>
             </tr>
         </tfoot>
@@ -46,6 +48,7 @@
                     }
                   }
                 },
+                { "data": "stok_tanggal" },
                 { "width": "150px", "render": function(data, type, full){
 
                     if (full['barang_set_stok']==0) {

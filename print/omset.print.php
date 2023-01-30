@@ -7,6 +7,7 @@ $tgl=date('Y-m-d');
 $wkt=date('G:i:s');
 
 $aid = $_SESSION['login_user'];
+$cetakitem = $_SESSION['cetakitem'];
 $aa = "SELECT * from users where id='$aid'";
   $bb = mysqli_query($con,$aa);
   $cc = mysqli_fetch_assoc($bb);
@@ -28,9 +29,13 @@ $aa = "SELECT * from users where id='$aid'";
       $datadebet=mysqli_fetch_assoc($query1);
       $omsetdebet = $datadebet['total'];
 
+      $query11=mysqli_query($con,"SELECT count(transaksi_id) as jumlah, sum(transaksi_bayar_debet) as total, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$iduser' group by transaksi_tanggal ");
+      $datadebet1=mysqli_fetch_assoc($query11);
+      $omsetdebet = $datadebet['total']+$datadebet1['total'];
+
       $query2=mysqli_query($con,"SELECT count(transaksi_id) as jumlah, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$iduser' and transaksi_type_bayar='Cash' group by transaksi_tanggal ");
       $datacash=mysqli_fetch_assoc($query2);
-      $omsetcash = $datacash['total'];
+      $omsetcash = $datacash['total']-$datadebet1['total'];
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -101,6 +106,23 @@ $aa = "SELECT * from users where id='$aid'";
   </tr>
 </table>
 
+<div style="width: 100%; border-top:1px solid #000; padding: 10px 0;"></div>
+<?php if($cetakitem==1) { ?>
+  <table  width="100%" border="0">
+    <tr>
+      <td><strong>Barang</strong></td>
+      <td><strong>Jumlah</strong></td>
+    </tr>
+  <?php
+    $sql ="SELECT transaksi_tanggal, ukuran_nama, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang, ukuran WHERE transaksi_id=transaksi_detail_nota and barang_ukuran=ukuran_id and transaksi_detail_barang_id=barang_id and transaksi_user='$aid' and transaksi_tanggal='$tgl' GROUP BY barang_id ";
+    $result=mysqli_query($con,$sql);
+    while($data1 = mysqli_fetch_assoc($result)) {
+      echo "<tr><td>$data1[barang_nama] $data1[ukuran_nama]</td><td>$data1[jumlah]</td></tr>";
+    }
+  ?>
+  </table>
+
+<?php } ?>
 </div>
 </body>
 </html>

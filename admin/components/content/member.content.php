@@ -20,6 +20,7 @@ if ($ket=='home') {
                 <th>tanggal lahir</th>
                 <th>usia (Th)</th>
                 <th>no hp</th>
+                <th>email</th>
                 <th>gender</th>
                 <th></th>
             </tr>
@@ -37,6 +38,7 @@ if ($ket=='home') {
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-email").val('');
             $("#modalmember #defaultForm-usia").val('');
             $("#modalmember #defaultForm-gender").val('');
             $("#modalmember #defaultForm-tgl-lahir").val('');
@@ -64,6 +66,7 @@ if ($ket=='home') {
                 { "data": "member_tgl_lahir" },
                 { "data": "member_usia" },
                 { "data": "member_hp" },
+                { "data": "member_email" },
                 { "data": "member_gender" },
 
                 { "width": "180px", "render": function(data, type, full){
@@ -94,6 +97,7 @@ if ($ket=='home') {
                                 $("#historymember .text-alamat").text("Alamat: "+data[0].member.member_alamat);
                                 $("#historymember .text-usia").text("Usia: "+data[0].member.member_usia);
                                 $("#historymember .text-hp").text("Telp: "+data[0].member.member_hp);
+                                $("#historymember .text-email").text("Telp: "+data[0].member.member_email);
                                 $("#historymember .text-gender").text("Gender: "+data[0].member.member_gender);
                                 $("#historymember .text-tgl-lahir").text("Tgl Lahir: "+data[0].member.member_tgl_lahir);
                             } else {
@@ -140,6 +144,7 @@ if ($ket=='home') {
                 <th>tanggal lahir</th>
                 <th>usia (Th)</th>
                 <th>no hp</th>
+                <th>email</th>
                 <th>gender</th>
                 <th></th>
             </tr>
@@ -157,6 +162,7 @@ if ($ket=='home') {
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-email").val('');
             $("#modalmember #defaultForm-usia").val('');
             $("#modalmember #defaultForm-gender").val('');
             $("#modalmember #defaultForm-tgl-lahir").val('');
@@ -182,6 +188,7 @@ if ($ket=='home') {
                 { "data": "member_tgl_lahir" },
                 { "data": "member_usia" },
                 { "data": "member_hp" },
+                { "data": "member_email" },
                 { "data": "member_gender" },
 
                 { "width": "180px", "render": function(data, type, full){
@@ -212,6 +219,7 @@ if ($ket=='home') {
                                 $("#historymember .text-alamat").text("Alamat: "+data[0].member.member_alamat);
                                 $("#historymember .text-usia").text("Usia: "+data[0].member.member_usia);
                                 $("#historymember .text-hp").text("Telp: "+data[0].member.member_hp);
+                                $("#historymember .text-hp").text("Telp: "+data[0].member.member_email);
                                 $("#historymember .text-gender").text("Gender: "+data[0].member.member_gender);
                                 $("#historymember .text-tgl-lahir").text("Tgl Lahir: "+data[0].member.member_tgl_lahir);
                             } else {
@@ -259,6 +267,7 @@ if ($ket=='home') {
                           $("#modalmember #defaultForm-alamat").val(data[0].member_alamat);
                           $("#modalmember #defaultForm-usia").val(data[0].member_usia);
                           $("#modalmember #defaultForm-hp").val(data[0].member_hp);
+                          $("#modalmember #defaultForm-email").val(data[0].member_email);
                           $("#modalmember #defaultForm-gender").val(data[0].member_gender);
                           $("#modalmember #defaultForm-tgl-lahir").val(data[0].member_tgl_lahir);
 

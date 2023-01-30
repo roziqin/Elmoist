@@ -23,7 +23,7 @@ if ($kond=='home' || $kond=='') {
                                 $sql="SELECT * from member ORDER BY member_id ASC";
                                 $result=mysqli_query($con,$sql);
                                 while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-                                    echo "<option value='$data1[member_id]'>$data1[member_nama] - $data1[member_no] - $data1[member_rm]</option>";
+                                    echo "<option value='$data1[member_id]'>$data1[member_nama] - $data1[member_no] - $data1[member_rm] - $data1[member_hp]</option>";
                                 }
                             ?>
                         </select>
@@ -34,9 +34,33 @@ if ($kond=='home' || $kond=='') {
                     </div>
                     <div class="md-form mb-3">
                         <select class="mdb-select md-form" id="defaultForm-therapist" name="ip-therapist" searchable="Search here..">
-                            <option value="" disabled selected>Pilih Therapist</option>
+                            <option value="" disabled selected>Pilih Beautician</option>
                             <?php
                                 $sql="SELECT * from users, roles WHERE roles_id=role and roles_name='therapist' ORDER BY id ASC";
+                                $result=mysqli_query($con,$sql);
+                                while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+                                    echo "<option value='$data1[id]'>$data1[name]</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="md-form mb-3">
+                        <select class="mdb-select md-form" id="defaultForm-dokter" name="ip-dokter" searchable="Search here..">
+                            <option value="" disabled selected>Pilih Dokter</option>
+                            <?php
+                                $sql="SELECT * from users, roles WHERE roles_id=role and roles_name='dokter' ORDER BY id ASC";
+                                $result=mysqli_query($con,$sql);
+                                while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+                                    echo "<option value='$data1[id]'>$data1[name]</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="md-form mb-3">
+                        <select class="mdb-select md-form" id="defaultForm-cs" name="ip-cs" searchable="Search here..">
+                            <option value="" disabled selected>Pilih CS</option>
+                            <?php
+                                $sql="SELECT * from users, roles WHERE roles_id=role and roles_name='kasir' ORDER BY id ASC";
                                 $result=mysqli_query($con,$sql);
                                 while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
                                     echo "<option value='$data1[id]'>$data1[name]</option>";
@@ -305,14 +329,30 @@ if ($kond=='home' || $kond=='') {
 					<textarea id="keterangan" class="md-textarea form-control" rows="3" name="keterangan"></textarea>
 					<label for="keterangan">Request</label>
 				</div>
-                <div class="md-form mt-4">
+                <div class="md-form mt-4 hidden">
                     <input type="text" id="hargamanual" class="form-control" name="hargamanual" >
                     <label for="hargamanual">Harga Manual</label>
+                </div>
+                <div class="md-form mb-4">
+                    <select class="mdb-select md-form" id="jenispotongan" name="jenispotongan" searchable="Search here..">
+                        <option value="">Pilih Diskon</option>
+                        <option value="potongan">Potongan</option>
+                        <option value="persen">Persen</option>
+                    </select>
+                </div>
+                <div class="md-form mt-4">
+                    <input type="text" id="potongan" class="form-control" name="potongan" >
+                    <label for="hargamanual">Jumlah Diskon</label>
                 </div>
 				<button class="btn btn-primary prosesmenu float-right">Proses</button>
 	    	</form>
 	    </div>
     </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.mdb-select').materialSelect();
+            });
+        </script>
 <?php } elseif ($kond=='kembalian') { ?>
     <input type="hidden" id="ketnota" value="<?php echo $_SESSION['no-nota']; ?>" name="ketnota">   
     <div class="row p-3 row-jumlah justify-content-md-center">
@@ -373,11 +413,12 @@ if ($kond=='home' || $kond=='') {
             $datanot=mysqli_fetch_assoc($querynot);
             $diskon = $datanot['transaksi_diskon'];
             $total = $datanot['transaksi_total'];
+            $notaprint = $datanot['transaksi_nota_print'];
         ?>
         <div class="col-md-12 p-5">
 
             <input type="hidden" id="ip-nota" class="form-control" name="ip-nota" value="<?php echo $nota; ?>" >
-            <h3>Cek Nota Transaksi : <?php echo $nota; ?></h3>
+            <h3>Cek Nota Transaksi : <?php echo $notaprint; ?></h3>
             <div class="row">
                 <div class="col-md-6 col-md-offset-0">
                     <h4>Nama : <?php echo $datanot['member_nama'];?></h4>
@@ -445,6 +486,13 @@ if ($kond=='home' || $kond=='') {
                         <input type="text" id="uangfisik" class="form-control" name="uangfisik" >
                         <label for="uangfisik">Masukkan Jumlah Uang Fisik</label>
                     </div>
+                    <div class="md-form mb-5">
+                        <select class="mdb-select md-form" id="defaultForm-cetak" name="cetak">
+                            <option value="0" selected>Cetak Item Terjual</option>
+                            <option value='0'>Tidak</option>
+                            <option value='1'>Ya</option>
+                        </select>
+                    </div> 
                     <button class="btn btn-primary prosestutupkasir float-right">Proses</button>
                     <button class="btn btn-danger kembali float-right">Kembali</button>
                 </form>
@@ -463,6 +511,11 @@ if ($kond=='home' || $kond=='') {
             </div>
         </div>
     </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.mdb-select').materialSelect();
+            });
+        </script>
 <?php } ?>
 
 
@@ -473,6 +526,8 @@ if ($kond=='home' || $kond=='') {
         e.preventDefault();
         var idmember = $('#defaultForm-member').val();
         var idtherapist = $('#defaultForm-therapist').val();
+        var iddokter = $('#defaultForm-dokter').val();
+        var idcs = $('#defaultForm-cs').val();
         var nama = $('#defaultForm-nama').val();
 
 
@@ -483,6 +538,8 @@ if ($kond=='home' || $kond=='') {
             data:{
                 idmember:idmember,
                 idtherapist:idtherapist,
+                iddokter:iddokter,
+                idcs:idcs,
                 nama:nama
             },
             success:function(data){
@@ -517,12 +574,15 @@ if ($kond=='home' || $kond=='') {
                         var jumlah = 1;
                         var keterangan = '';
                         var hargamanual = 0;
+
                         if ($('#defaultForm-ordertype').val()=='online') {
                             var pajakjml = $('#ip-pajakonline').val();  
                         } else {
                             var pajakjml = $('#ip-pajakresto').val();
                         }
                         console.log(barang_id);
+                        var potongan = 0;
+                        var jenispotongan = '';
                         
                         $.ajax({
                             type:'POST',
@@ -532,7 +592,9 @@ if ($kond=='home' || $kond=='') {
                                 barang_id:barang_id,
                                 jumlah:jumlah,
                                 keterangan:keterangan,
-                                hargamanual:hargamanual
+                                hargamanual:hargamanual,
+                                potongan:potongan,
+                                jenispotongan:jenispotongan
                             },
                             success:function(data){
                                 $('#carimenu').val('');
@@ -664,6 +726,8 @@ if ($kond=='home' || $kond=='') {
         	var pajakjml = $('#ip-pajakresto').val();
         }
         console.log(barang_id);
+        var potongan = 0;
+        var jenispotongan = '';
         
         $.ajax({
             type:'POST',
@@ -673,7 +737,9 @@ if ($kond=='home' || $kond=='') {
             	barang_id:barang_id,
             	jumlah:jumlah,
             	keterangan:keterangan,
-                hargamanual:hargamanual
+                hargamanual:hargamanual,
+                potongan:potongan,
+                jenispotongan:jenispotongan
             },
             success:function(data){
 				$('#carimenu').val('');
@@ -1084,16 +1150,17 @@ if ($kond=='home') { ?>
             url:'api/view.api.php?func=list-member-temp',
             dataType: "json",
             success:function(data){
+                console.log(data)
                 $('#listmember table').empty();
                 var nama = ''; 
                 if (data!='') {
-                    if (data[0].member_temp_member_id==0) {
-                        nama = data[0].member_temp_nama;
+                    if (data[1].member_temp_member_id==0) {
+                        nama = data[1].member_temp_nama;
                     } else {
-                        nama = data[0].member_nama;
+                        nama = data[1].member_nama;
                     }
-                    $('#listmember table').append('<tr><td><h6>Nama Member: '+nama+'</h6></td><td class="text-right"><h6>Alamat Member: '+data[0].member_alamat+'</h6></td></tr>'+
-                        '<tr><td><h6>Nama Therapist: '+data[0].name+'</h6></td><td class="text-right"><h6>Nama Kasir: '+$('#defaultForm-user').val()+'</h6></td></tr>');
+                    $('#listmember table').append('<tr><td><h6>Nama Member: '+nama+'</h6></td><td class="text-right"><h6>Alamat Member: '+data[1].member_alamat+'</h6></td></tr>'+
+                        '<tr><td><h6>Nama Beautician: '+data[1].name+'</h6></td><td class="text-right"><h6>Nama Kasir: '+data[0].namacs+'</h6></td></tr><tr><td><h6>Nama Dokter: '+data[0].namadokter+'</h6></td><td class="text-right"></td></tr>');
                     $('#bayar').removeAttr("disabled");
                 }
             }

@@ -203,7 +203,7 @@
 		$('#bayar').on('click',function(){
 		    $("#totaltransaksi").empty();
 		    $("#totaltransaksi").append($("#total").text());
-        	$('#defaultForm-totalmodal').val($("#defaultForm-total").val());
+        	$('#modaltransaksi #defaultForm-total').val($("#defaultForm-total").val());
 
 
 		    $('.btn.paytype').on('click',function(){
@@ -216,15 +216,24 @@
 				$('.btn.paytype').removeClass("select");
 				$(this).addClass("select");
 
-				if (id=='cash') {
-					$('#price').removeAttr("disabled");
-					$('#price').val('');
-                  	$("#modaltransaksi label").removeClass("active");
-				} else {
-                  	$("#modaltransaksi label").addClass("active");
-					$('#price').val(formatCurrency($('#defaultForm-totalmodal').val().toString(), ''));
-					$('#price').attr("disabled","true");
-				}
+					if (id=='cash') {
+						$('#price').removeAttr("disabled");
+						$('#price').val('');
+	        	$("#modaltransaksi label").removeClass("active");
+						$('#price1').attr("disabled","true");
+					} else if (id=='cashdebet') {
+						console.log("cashdebet")
+						$('#price').removeAttr("disabled");
+						$('#price').val('');
+	        	$("#modaltransaksi label").removeClass("active");
+						$('#price1').removeAttr("disabled");
+						$('#price1').val('');
+					} else {
+	        	$("#modaltransaksi label").addClass("active");
+						$('#price').val(formatCurrency($('#modaltransaksi #defaultForm-total').val().toString(), ''));
+						$('#price').attr("disabled","true");
+						$('#price1').attr("disabled","true");
+					}
 
 		    });
 			

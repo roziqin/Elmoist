@@ -17,6 +17,8 @@ if($_GET['ket']=='tambahmenu'){
 	$jumlah = $_POST['jumlah'];
 	$ket = $_POST['keterangan'];
 	$hargamanual = $_POST['hargamanual'];
+	$potongan = $_POST['potongan'];
+	$jenispotongan = $_POST['jenispotongan'];
 
 	$sql="SELECT * from barang where barang_id='$id'";
 	$query=mysqli_query($con,$sql);
@@ -37,6 +39,16 @@ if($_GET['ket']=='tambahmenu'){
 	$diskon = $harga*$data['barang_diskon']/100;
 	if ($diskon!=0) {
 		$harga = $harga - $diskon;
+	}
+
+	if ($potongan!=0) {
+		if ($jenispotongan=='persen') {
+			$diskon = $harga*$potongan/100;
+			$harga = $harga - $diskon;
+		} else {
+			$harga = $harga - $potongan;
+			$diskon = $potongan;
+		}
 	}
 
 	$tot = $harga*$jumlah;
@@ -69,6 +81,10 @@ if($_GET['ket']=='tambahmenu'){
 
     $sql = "DELETE from pembelian_detail_temp where pembelian_detail_temp_user='$user'";
     mysqli_query($con,$sql);
+
+    
+    $sqldelete1 = "DELETE from pembelian_temp where pembelian_temp_user_id='$user'";
+    mysqli_query($con,$sqldelete1);
 
 		$_SESSION['order_type'] = "";
 		$array_datas[] = ["ok"];
@@ -142,15 +158,48 @@ if($_GET['ket']=='tambahmenu'){
 	
 	echo json_encode($array_datas);
 
+} elseif($_GET['ket']=='inputfaktur'){
+
+	$nofaktur = $_POST['nofaktur'];
+
+	$sql = "INSERT INTO pembelian_temp(pembelian_temp_no_faktur,pembelian_temp_user_id)values('$nofaktur','$user')";
+
+	mysqli_query($con,$sql);
+
+	$query="SELECT * from pembelian_temp where pembelian_temp_user_id='$user' ORDER BY pembelian_temp_id DESC LIMIT 1";
+	$result = mysqli_query($con,$query);
+
+	while($baris = mysqli_fetch_assoc($result))
+	{
+	  $array_datas['member']=$baris;
+	}
+	
+	echo json_encode($array_datas);
+	
 } elseif($_GET['ket']=='prosespembelian') {
 	$total = $_POST['ip-total'];
+	$paytype = $_POST['ip-paytype'];
+	$bayar = $_POST['ip-bayar'];
+	$debet = $_POST['ip-bayar-debet'];
+	$debetket = $_POST['ip-bayar-debet-ket'];
+
+	$kembalian = $bayar + $debet - $total;
+
+	if ($paytype=='cashdebet') {
+		$paytype = 'cash';
+	}
+
+	$sql1="SELECT * from pembelian_temp where pembelian_temp_user_id='$user'";
+	$query1=mysqli_query($con,$sql1);
+	$data1=mysqli_fetch_assoc($query1);
+	$nofaktur = $data1['pembelian_temp_no_faktur'];
 
 	$qcn= "SELECT MAX( pembelian_nota_print ) AS nota_print FROM pembelian";
     $rcn=mysqli_query($con,$qcn);
     $dcn=mysqli_fetch_assoc($rcn);
     $nota_print = $dcn['nota_print']+1;
 
-	$sql = "INSERT INTO pembelian (pembelian_nota_print,pembelian_tanggal,pembelian_bulan,pembelian_waktu,pembelian_total,pembelian_diskon,pembelian_bayar,pembelian_type_bayar,pembelian_user,pembelian_ket) VALUES ('$nota_print','$tgl','$bln','$wkt','$total','0','$total','','$user','')" ;
+	$sql = "INSERT INTO pembelian (pembelian_nota_print,pembelian_no_faktur,pembelian_tanggal,pembelian_bulan,pembelian_waktu,pembelian_total,pembelian_diskon,pembelian_bayar,pembelian_type_bayar,pembelian_bayar_debet,pembelian_bayar_debet_ket,pembelian_user,pembelian_ket) VALUES ('$nota_print','$nofaktur','$tgl','$bln','$wkt','$total','0','$bayar','$paytype','$debet','$debetket','$user','')" ;
 
 	mysqli_query($con,$sql);
 
@@ -195,12 +244,15 @@ if($_GET['ket']=='tambahmenu'){
 		
     }
 
-    $_SESSION['kembalian'] = $kembalian;
+    $_SESSION['kembalian'] = 0;
     $_SESSION['print'] = 'ya';
     $_SESSION['order']='';
 
     $sqldelete = "DELETE from pembelian_detail_temp where pembelian_detail_temp_user='$user'";
     mysqli_query($con,$sqldelete);
+
+    $sqldelete1 = "DELETE from pembelian_temp where pembelian_temp_user_id='$user'";
+    mysqli_query($con,$sqldelete1);
 
     $array_dataa = array('nota'=>$no_not);
 

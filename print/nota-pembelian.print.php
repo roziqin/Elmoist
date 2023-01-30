@@ -25,6 +25,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
     $query = mysqli_query($con,$sql);
     while($data = mysqli_fetch_assoc($query)) {
 
+      $nofaktur = $data['pembelian_no_faktur'];
       $tanggal = $data['pembelian_tanggal'];
       $tran_tot = $data['pembelian_total'];
       $nota_print=$data['pembelian_nota_print'];
@@ -60,18 +61,17 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
       
       <table  width="100%" border="0" >
         <tr>
-          <td width="80">Tgl & Waktu</td>
-          <td width="10">:</td>
-          <td ><?php echo $tgl." - ".$wkt; ?></td>
-          <td width="80" align="right">No. Nota - <?php echo $nota_print; ?></td>
+          <td colspan="4" align="center"><?php echo $tgl." - ".$wkt; ?></td>
         </tr>
-      </table>
-      <table  width="100%" border="0" >
         <tr>
-          <td width="80">Admin</td>
+          <td width="60">Admin</td>
           <td width="10">:</td>
-          <td ><?php echo $id;?></td>
-          <td align="right"></td>
+          <td colspan="2"><?php echo $id;?></td>
+        </tr>
+        <tr>
+          <td width="60">No Faktur</td>
+          <td width="10">:</td>
+          <td colspan="2"><?php echo $nofaktur; ?></td>
         </tr>
       </table>
 

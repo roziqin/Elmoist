@@ -1,6 +1,7 @@
 <?php
 include '../modals/laporan.modal.php';
 include '../modals/laporan-pembelian.modal.php';
+include '../modals/laporandetailmember.modal.php';
 $con = mysqli_connect("localhost","root","","salon_kecantikan");
 $ket = $_GET['ket'];
 
@@ -90,6 +91,10 @@ if ($ket=='omset' || $ket=='kasir') {
 								            <option value="2019">2019</option>
 								            <option value="2020">2020</option>
 								            <option value="2021">2021</option>
+								            <option value="2022">2022</option>
+								            <option value="2023">2023</option>
+								            <option value="2024">2024</option>
+								            <option value="2025">2025</option>
 								        </select>
 					            	</div>
 					            </div>
@@ -122,6 +127,10 @@ if ($ket=='omset' || $ket=='kasir') {
 								            <option value="2019">2019</option>
 								            <option value="2020">2020</option>
 								            <option value="2021">2021</option>
+								            <option value="2022">2022</option>
+								            <option value="2023">2023</option>
+								            <option value="2024">2024</option>
+								            <option value="2025">2025</option>
 								        </select>
 					            	</div>
 					            </div>
@@ -190,6 +199,119 @@ if ($ket=='omset' || $ket=='kasir') {
 	<div class="row justify-content-md-center">
 		<div class="col-md-10">
 			<div class="row">
+				<div class="col-md-5">
+		            <div class="md-form m-0">
+		            	<div class="row">
+			            	<div class="col-md-6">
+						        <select class="mdb-select md-form" id="startmonth" name="ip-startmonth">
+				                    <option value="" disabled selected>Bulan Mulai</option>
+						            <option value="01">01</option>
+						            <option value="02">02</option>
+						            <option value="03">03</option>
+						            <option value="04">04</option>
+						            <option value="05">05</option>
+						            <option value="06">06</option>
+						            <option value="07">07</option>
+						            <option value="08">08</option>
+						            <option value="09">09</option>
+						            <option value="10">10</option>
+						            <option value="11">11</option>
+						            <option value="12">12</option>
+						        </select>
+			            	</div>
+			            	<div class="col-md-6">
+						        <select class="mdb-select md-form" id="startyear" name="ip-startyear">
+				                    <option value="" disabled selected>Tahun Mulai</option>
+						            <option value="2018">2018</option>
+						            <option value="2019">2019</option>
+						            <option value="2020">2020</option>
+						            <option value="2021">2021</option>
+						            <option value="2022">2022</option>
+						            <option value="2023">2023</option>
+						            <option value="2024">2024</option>
+						            <option value="2025">2025</option>
+						        </select>
+			            	</div>
+			            </div>
+		            </div>
+				</div>
+				<div class="col-md-5">
+		            <div class="md-form m-0">
+		            	<div class="row">
+			            	<div class="col-md-6">
+						        <select class="mdb-select md-form" id="endmonth" name="ip-endmonth">
+				                    <option value="" disabled selected>Bulan Sampai</option>
+						            <option value="01">01</option>
+						            <option value="02">02</option>
+						            <option value="03">03</option>
+						            <option value="04">04</option>
+						            <option value="05">05</option>
+						            <option value="06">06</option>
+						            <option value="07">07</option>
+						            <option value="08">08</option>
+						            <option value="09">09</option>
+						            <option value="10">10</option>
+						            <option value="11">11</option>
+						            <option value="12">12</option>
+						        </select>
+			            	</div>
+			            	<div class="col-md-6">
+						        <select class="mdb-select md-form" id="endyear" name="ip-endyear">
+				                    <option value="" disabled selected>Tahun Sampai</option>
+						            <option value="2018">2018</option>
+						            <option value="2019">2019</option>
+						            <option value="2020">2020</option>
+						            <option value="2021">2021</option>
+						            <option value="2022">2022</option>
+						            <option value="2023">2023</option>
+						            <option value="2024">2024</option>
+						            <option value="2025">2025</option>
+						        </select>
+			            	</div>
+			            </div>
+		            </div>
+		        </div>
+				<div class="col-md-2">
+				    <div class="md-form">
+				    	<button class="btn btn-primary btn-proses-laporan-menu">Proses</button>
+				    </div>
+				</div>
+			</div>	
+			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12"><h2 class="text-center mb-4">Barang</h2></div>
+				<div class="col-md-12">
+					<table id="table-menu" class="table table-striped table-bordered" style="width:100%">
+				        <thead>
+				            <tr>
+	                            <th>item</th>
+	                            <th>jumlah</th>
+				            </tr>
+				        </thead>
+				        <tfoot>
+				            <tr>
+	                            <th>item</th>
+	                            <th>jumlah</th>
+				            </tr>
+				        </tfoot>
+				    </table>
+				</div>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-item-terjual hidden" href="">Export</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php
+
+} elseif ($ket=='laba') {
+
+	?>
+	<div class="row justify-content-md-center">
+		<div class="col-md-10">
+			<div class="row">
 				<div class="col-md-2">
 				    <div class="md-form">
 				        <select class="mdb-select md-form" id="daterange" name="ip-daterange">
@@ -198,21 +320,7 @@ if ($ket=='omset' || $ket=='kasir') {
 				        </select>
 				    </div>
 				</div>
-				<div class="col-md-2">
-				    <div class="md-form">
-				        <select class="mdb-select md-form" id="defaultForm-menu" name="ip-menu">
-		                    <option value="" disabled selected>Pilih barang</option>
-		                <?php
-		                	$sql="SELECT * from barang";
-		                  	$result=mysqli_query($con,$sql);
-		                  	while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-		                      	echo "<option value='$data1[barang_id]'>$data1[barang_nama]</option>";
-		                  	}
-		                ?>
-				        </select>
-				    </div>
-				</div>
-				<div class="col-md-6">
+				<div class="<?php echo $col; ?>">
 					<div class="row form-date">
 						<div class="col-md-6">
 				            <div class="md-form">
@@ -253,6 +361,10 @@ if ($ket=='omset' || $ket=='kasir') {
 								            <option value="2019">2019</option>
 								            <option value="2020">2020</option>
 								            <option value="2021">2021</option>
+								            <option value="2022">2022</option>
+								            <option value="2023">2023</option>
+								            <option value="2024">2024</option>
+								            <option value="2025">2025</option>
 								        </select>
 					            	</div>
 					            </div>
@@ -285,6 +397,10 @@ if ($ket=='omset' || $ket=='kasir') {
 								            <option value="2019">2019</option>
 								            <option value="2020">2020</option>
 								            <option value="2021">2021</option>
+								            <option value="2022">2022</option>
+								            <option value="2023">2023</option>
+								            <option value="2024">2024</option>
+								            <option value="2025">2025</option>
 								        </select>
 					            	</div>
 					            </div>
@@ -294,36 +410,38 @@ if ($ket=='omset' || $ket=='kasir') {
 				</div>
 				<div class="col-md-2">
 				    <div class="md-form">
-				    	<button class="btn btn-primary btn-proses-laporan-menu">Proses</button>
+				    	<button class="btn btn-primary btn-proses-laporan-laba">Proses</button>
 				    </div>
 				</div>
 			</div>	
 			<div class="row fadeInLeft slow animated">
-				<div class="col-md-12"><h2 class="text-center mb-4">Barang</h2></div>
+				<div class="col-md-12"><h2 class="text-center mb-4">Laba</h2></div>
 				<div class="col-md-12">
-					<table id="table-menu" class="table table-striped table-bordered" style="width:100%">
+					<table id="table-laba" class="table table-striped table-bordered" style="width:100%">
 				        <thead>
 				            <tr>
 	                            <th>tanggal</th>
-	                            <th>item</th>
-	                            <th>jumlah</th>
+	                            <th style="text-align: right;">Omset</th>
+	                            <th style="text-align: right;">Laba</th>
+	                            <th style="text-align: right;">Obat</th>
+	                            <th style="text-align: right;">Treament</th>
+	                            <th style="text-align: right;">Skincare</th>
+	                            <th style="text-align: right;">Tindakan Dokter</th>
+	                            <th style="text-align: right;">Diskon Transaksi</th>
+	                            <th style="text-align: right;">Laba Akhir</th>
 				            </tr>
 				        </thead>
-				        <tfoot>
-				            <tr>
-	                            <th>tanggal</th>
-	                            <th>item</th>
-	                            <th>jumlah</th>
-				            </tr>
-				        </tfoot>
 				    </table>
+				</div>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-laba hidden" href="" target="_blank">Export</a>
+				    </div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 <?php
-
 } elseif ($ket=='stok') {
 	?>
 	<div class="row justify-content-md-center">
@@ -610,7 +728,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					<table id="table-pembelian" class="table table-striped table-bordered" style="width:100%">
 				        <thead>
 				            <tr>
-	                            <th>nota</th>
+	                            <th>no faktur</th>
 	                            <th>tanggal</th>
 	                            <th>admin</th>
 	                            <th>total</th>
@@ -677,6 +795,121 @@ if ($ket=='omset' || $ket=='kasir') {
 	                            <th>tanggal</th>
 	                            <th>pelanggan</th>
 	                            <th>kasir</th>
+	                            <th>total</th>
+	                            <th></th>
+				            </tr>
+				        </thead>
+				    </table>
+				</div>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-member hidden" href="" target="_blank">Export</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php
+} elseif ($ket=='semuamember') {
+	?>
+	<div class="row justify-content-md-center">
+		<div class="col-md-10">
+			<div class="row">
+				
+				<div class="col-md-5">
+					<div class="row form-date">
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<select class="mdb-select md-form" id="startmonth" name="ip-startmonth">
+				                    <option value="" disabled selected>Bulan Mulai</option>
+						            <option value="01">01</option>
+						            <option value="02">02</option>
+						            <option value="03">03</option>
+						            <option value="04">04</option>
+						            <option value="05">05</option>
+						            <option value="06">06</option>
+						            <option value="07">07</option>
+						            <option value="08">08</option>
+						            <option value="09">09</option>
+						            <option value="10">10</option>
+						            <option value="11">11</option>
+						            <option value="12">12</option>
+						        </select>
+				            </div>
+						</div>
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<select class="mdb-select md-form" id="startyear" name="ip-startyear">
+				                    <option value="" disabled selected>Tahun Mulai</option>
+						            <option value="2018">2018</option>
+						            <option value="2019">2019</option>
+						            <option value="2020">2020</option>
+						            <option value="2021">2021</option>
+						            <option value="2022">2022</option>
+						            <option value="2023">2023</option>
+						            <option value="2024">2024</option>
+						            <option value="2025">2025</option>
+						        </select>
+				            </div>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="row form-date">
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<select class="mdb-select md-form" id="endmonth" name="ip-endmonth">
+				                    <option value="" disabled selected>Bulan Sampai</option>
+						            <option value="01">01</option>
+						            <option value="02">02</option>
+						            <option value="03">03</option>
+						            <option value="04">04</option>
+						            <option value="05">05</option>
+						            <option value="06">06</option>
+						            <option value="07">07</option>
+						            <option value="08">08</option>
+						            <option value="09">09</option>
+						            <option value="10">10</option>
+						            <option value="11">11</option>
+						            <option value="12">12</option>
+						        </select>
+				            </div>
+						</div>
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<select class="mdb-select md-form" id="endyear" name="ip-endyear">
+				                    <option value="" disabled selected>Tahun Sampai</option>
+						            <option value="2018">2018</option>
+						            <option value="2019">2019</option>
+						            <option value="2020">2020</option>
+						            <option value="2021">2021</option>
+						            <option value="2022">2022</option>
+						            <option value="2023">2023</option>
+						            <option value="2024">2024</option>
+						            <option value="2025">2025</option>
+						        </select>
+				            </div>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-2">
+				    <div class="md-form">
+				    	<button class="btn btn-primary btn-proses-laporan-semuamember">Proses</button>
+				    </div>
+				</div>
+			</div>	
+			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12">
+					<table id="table-semuamember" class="table table-striped table-bordered" style="width:100%">
+				        <thead>
+				            <tr>
+	                            <th>pelanggan</th>
+	                            <th>alamat</th>
+	                            <th>Kelurahan</th>
+	                            <th>Kecamatan</th>
+	                            <th>Kabupaten</th>
+	                            <th>Telp</th>
 	                            <th>total</th>
 	                            <th></th>
 				            </tr>
@@ -809,6 +1042,87 @@ if ($ket=='omset' || $ket=='kasir') {
 			</div>
 		</div>
 	</div>
+
+<?php
+
+} elseif ($ket=='persediaan') {
+
+	?>
+
+	<div class="row justify-content-md-center">
+		<div class="col-md-10">	
+			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12"><h2 class="text-center mb-4">Persediaan</h2></div>
+				<div class="col-md-12">
+					<table id="table-stok" class="table table-striped table-bordered" style="width:100%">
+				        <thead>
+				            <tr>
+	                            <th>Nama Barang</th>
+	                            <th>Kategori</th>
+	                            <th>stok</th>
+	                            <th>harga beli</th>
+	                            <th>harga jual</th>
+	                            <th>aset</th>
+				            </tr>
+				        </thead>
+				    </table>
+				</div>
+				<?php
+					$sqlnot="SELECT sum(barang_stok*barang_harga_beli) as jumlah FROM barang WHERE barang_stok NOT LIKE '0' ";
+				    $querynot=mysqli_query($con,$sqlnot);
+				    $datanot=mysqli_fetch_assoc($querynot);
+				?>
+				<h3>Total: Rp. <?php echo format_rupiah($datanot['jumlah']); ?></h3>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-stokmenu" href="../include/export_persediaan.php">Export</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+      
+    $(document).ready(function() {
+
+        $('#table-stok').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "pageLength": 500,
+            "ajax": 
+            {
+                "url": "api/datatable.api.php?ket=stoklaporan", // URL file untuk proses select datanya
+                "type": "POST"
+            },
+            "deferRender": true,
+            "columns": [
+                { "data": "barang_nama" },
+                { "data": "kategori_nama" },
+                { "data": "barang_stok" },
+                { "render": function(data, type, full){ 
+                		return formatRupiah(full['barang_harga_beli'].toString(), 'Rp. ');
+                	}
+                },
+                { "render": function(data, type, full){ 
+                		return formatRupiah(full['barang_harga_jual'].toString(), 'Rp. ');
+                	}
+                },
+                { "render": function(data, type, full){ 
+                		var aset = parseInt(full['barang_stok'])*parseInt(full['barang_harga_beli']);
+                		return formatRupiah(aset.toString(), 'Rp. ');
+
+                	}
+                }
+            ],
+            "drawCallback": function( settings ) {
+              
+            }
+        } );
+
+      
+    } );
+    </script>
 
 <?php
 
@@ -1054,25 +1368,138 @@ if ($ket=='omset' || $ket=='kasir') {
 		        	console.log(data);
 		        }
 		    });
-		});   
+		});
 
-		$('.btn-proses-laporan-menu').on('click',function(){
+
+		$('.btn-proses-laporan-laba').on('click',function(){
 			var daterange = $('#daterange').val();
-			var menu = $('#defaultForm-menu').val();
-
 			if (daterange=='harian') {
-
 	          	var start = $('#defaultForm-startdate').val();
 	          	var end = $('#defaultForm-enddate').val();
 	          	var kettext = 'transaksi_tanggal';
-				
 			} else if (daterange=='bulanan') {
-
 	          	var start = $("#startyear").val()+"-"+$("#startmonth").val();
 	          	var end = $("#endyear").val()+"-"+$("#endmonth").val();
 	          	var kettext = 'transaksi_bulan';
-				
 			}
+
+			var date = start+":"+end;
+
+			$.ajax({
+		        type:'POST',
+		        url:'api/view.api.php?func=laporan-laba',
+		        dataType: "json",
+            	data:{
+            		daterange:daterange,
+            		start:start,
+            		end:end
+            	},
+		        success:function(data){
+		        	$('#table-laba').DataTable().clear().destroy();
+		        	if (kettext=='transaksi_bulan') {
+			        	$('#table-laba').DataTable( {
+						    paging: false,
+						    searching: false,
+						    ordering: false,
+						    data: data,
+				            deferRender: true,
+						    columns: [
+						        { data: 'transaksi_bulan' },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['total'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['laba'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['obat'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['treament'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['skincare'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['dokter'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['diskontran'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['labaakhir'].toString(), 'Rp. ');
+				                  }
+				                }
+						    ]
+						});
+
+		        	} else if (kettext=='transaksi_tanggal') {
+			        	$('#table-laba').DataTable( {
+						    paging: false,
+						    searching: false,
+						    ordering: false,
+				            deferRender: true,
+						    data: data,
+						    columns: [
+						        { data: 'transaksi_tanggal' },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['total'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['laba'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['obat'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['treament'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['skincare'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['dokter'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['diskontran'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { "width": "120px", render: function(data, type, full){
+				                   return formatRupiah(full['labaakhir'].toString(), 'Rp. ');
+				                  }
+				                }
+						    ]
+						});
+		        	} 
+
+		        	$("a.export-laba").removeClass("hidden");
+			        $("a.export-laba").attr("href","../include/export_laba.php?date="+date+"&ket="+daterange);
+		        	console.log("success "+kettext);
+		        	console.log(data);
+		        }
+		    });
+		});   
+
+		$('.btn-proses-laporan-menu').on('click',function(){
+			
+			var start = $("#startyear").val()+"-"+$("#startmonth").val();
+	    	var end = $("#endyear").val()+"-"+$("#endmonth").val();
+	    	var kettext = 'transaksi_bulan';
+					
+			var date = start+":"+end;
 
 			
 			$.ajax({
@@ -1080,42 +1507,26 @@ if ($ket=='omset' || $ket=='kasir') {
 		        url:'api/view.api.php?func=laporan-menu',
 		        dataType: "json",
             	data:{
-            		daterange:daterange,
             		start:start,
-            		end:end,
-            		menu:menu
+            		end:end
             	},
 		        success:function(data){
 		        	console.log(menu);
 		        	$('#table-menu').DataTable().clear().destroy();
-		        	if (kettext=='transaksi_bulan') {
-			        	$('#table-menu').DataTable( {
-						    paging: false,
-						    searching: false,
-						    ordering: false,
-						    data: data,
-						    columns: [
-						        { data: 'transaksi_bulan' },
-						        { data: 'barang_nama' },
-						        { data: 'jumlah' }
-						    ]
-						} );
+	        	
+		        	$('#table-menu').DataTable( {
+					    paging: false,
+					    searching: false,
+					    ordering: false,
+					    data: data,
+					    columns: [
+					        { data: 'barang_nama' },
+					        { data: 'jumlah' }
+					    ]
+					});
 
-		        	} else if (kettext=='transaksi_tanggal') {
-			        	$('#table-menu').DataTable( {
-						    paging: false,
-						    searching: false,
-						    ordering: false,
-						    data: data,
-						    columns: [
-						        { data: 'transaksi_tanggal' },
-						        { data: 'barang_nama' },
-						        { data: 'jumlah' }
-						    ]
-						} );
-
-		        	} 
-
+		        	$("a.export-item-terjual").removeClass("hidden");
+			        $("a.export-item-terjual").attr("href","../include/export_item_terjual.php?date="+date);
 		        	console.log("success "+kettext);
 		        	console.log(data);
 		        }
@@ -1323,7 +1734,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					    data: data,
 			            deferRender: true,
 					    columns: [
-					        { data: 'transaksi_id' },
+					        { data: 'transaksi_nota_print' },
 					        { data: 'transaksi_tanggal' },
 					        { data: 'member_nama' },
 					        { data: 'name' },
@@ -1348,6 +1759,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					            		notaid:notaid
 					            	},
 							        success:function(data){
+					        			$('#listbarang tbody').empty();
 							        	for (var i in data) {
 
 							        		if (i==0) {
@@ -1403,7 +1815,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					    data: data,
 			            deferRender: true,
 					    columns: [
-					        { data: 'pembelian_id' },
+					        { data: 'pembelian_no_faktur' },
 					        { data: 'pembelian_tanggal' },
 					        { data: 'name' },
 					        { render: function(data, type, full){
@@ -1427,10 +1839,11 @@ if ($ket=='omset' || $ket=='kasir') {
 					            		notaid:notaid
 					            	},
 							        success:function(data){
+					        			$('#listbarangpembelian tbody').empty();
 							        	for (var i in data) {
 
 							        		if (i==0) {
-					                        	$('#modaldetailpembelian p.nonota').text('No Nota: '+data[i].notaid);
+					                        	$('#modaldetailpembelian p.nonota').text('No Faktur: '+data[i].nofaktur);
 					                        	$('#modaldetailpembelian p.admin').text('Admin: '+data[i].user);
 					                        	$('#modaldetailpembelian p.total').text(formatRupiah(data[i].total.toString(), 'Rp. '));
 							        		} else {
@@ -1480,7 +1893,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					    data: data,
 			            deferRender: true,
 					    columns: [
-					        { data: 'transaksi_id' },
+					        { data: 'transaksi_nota_print' },
 					        { data: 'transaksi_tanggal' },
 					        { data: 'member_nama' },
 					        { data: 'name' },
@@ -1505,6 +1918,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					            		notaid:notaid
 					            	},
 							        success:function(data){
+					        			$('#listbarang tbody').empty();
 							        	for (var i in data) {
 
 							        		if (i==0) {
@@ -1529,6 +1943,105 @@ if ($ket=='omset' || $ket=='kasir') {
 
 		        	$("a.export-member").removeClass("hidden");
 			        $("a.export-member").attr("href","../include/export_member.php?member="+member+"&date="+date);
+		        }
+		    });
+			
+		}); 
+
+		$('.btn-proses-laporan-semuamember').on('click',function(){
+			
+          	
+	    	var start = $("#startyear").val()+"-"+$("#startmonth").val();
+	    	var end = $("#endyear").val()+"-"+$("#endmonth").val();
+
+	    	var kettext = 'transaksi_bulan';
+
+			var date = start+":"+end;
+			console.log("nota")
+			$.ajax({
+		        type:'POST',
+		        url:'api/view.api.php?func=laporan-semuamember',
+		        dataType: "json",
+            	data:{
+            		start:start,
+            		end:end
+            	},
+		        success:function(data){
+		        	$('#table-semuamember').DataTable().clear().destroy();
+		        	
+		        	$('#table-semuamember').DataTable( {
+					    paging: true,
+					    searching: true,
+					    ordering: true,
+					    data: data,
+			            deferRender: true,
+					    columns: [
+					        { data: 'member_nama' },
+					        { data: 'member_alamat' },
+					        { data: 'member_kelurahan' },
+					        { data: 'member_kecamatan' },
+					        { data: 'member_kabupaten' },
+					        { data: 'member_hp' },
+					        { render: function(data, type, full){
+			                   return formatRupiah(full['transaksi_total'].toString(), 'Rp. ');
+			                  }
+			                },
+			                { render: function(data, type, full){
+			                   return '<a class="btn-floating btn-sm btn-primary mr-2 btn-detailmember" data-toggle="modal" data-target="#detailmember" data-id="' + full['member_id'] + '" data-start="' + start + '" data-end="' + end + '" title="Detail"><i class="far fa-file-alt"></i></a>';
+			                  }
+			                }
+					    ],
+			            drawCallback: function( settings ) {
+		
+							$('.btn-detailmember').on('click',function(){
+								
+								var id = $(this).data('id');
+								var start = $(this).data('start');
+								var end = $(this).data('end');
+					          	$.ajax({
+							        type:'POST',
+							        url:'api/view.api.php?func=cek-detailmember',
+							        dataType: "json",
+					            	data:{
+					            		id:id,
+					            		start:start,
+					            		end:end
+					            	},
+							        success:function(data){
+							        	for (var i in data) {
+
+							        		if (i==0) {
+					                        	$("#detailmember .text-no").text("No Member: "+data[0].member.member_no);
+				                                $("#detailmember .text-nama").text("Nama: "+data[0].member.member_nama);
+				                                $("#detailmember .text-alamat").text("Alamat: "+data[0].member.member_alamat+" "+data[0].member.member_kelurahan+" "+data[0].member.member_kecamatan+" "+data[0].member.member_kabupaten);
+				                                $("#detailmember .text-hp").text("Telp: "+data[0].member.member_hp);
+				                                $("#detailmember .text-tgl-lahir").text("Tgl Lahir: "+data[0].member.member_tgl_lahir);
+							        		} else {
+									        	$('#table-detailmember').DataTable().clear().destroy();
+							        			$('#table-detailmember').DataTable( {
+				                                    paging: true,
+				                                    searching: true,
+				                                    ordering: true,
+				                                    deferRender: true,
+				                                    data: data["table"],
+				                                    columns: [
+				                                        { data: 'barang_nama' },
+				                                        { data: 'jumlah' },
+				                                        { data: 'total' }
+				                                    ]
+				                                });
+							        		}
+							            }
+
+							        }
+							    });
+							}); 
+
+			            }
+					});
+
+		        	$("a.export-member").removeClass("hidden");
+			        $("a.export-member").attr("href","../include/export_semuamember.php?date="+date);
 		        }
 		    });
 			

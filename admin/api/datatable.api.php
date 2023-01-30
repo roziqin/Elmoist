@@ -35,13 +35,13 @@ if ($_GET['ket']=='produk') {
 
 	$sql = mysqli_query($con, "SELECT member_id FROM member"); // Query untuk menghitung seluruh data siswa
 	$sql_count = mysqli_num_rows($sql); // Hitung data yg ada pada query $sql
-	$query = "SELECT * FROM member where (member_nama LIKE '%".$search."%')";
+	$query = "SELECT * FROM member where (member_nama LIKE '%".$search."%' OR member_hp LIKE '%".$search."%')";
 	
 } elseif ($_GET['ket']=='memberultah') {
 
 	$sql = mysqli_query($con, "SELECT member_id FROM member WHERE MONTH(member_tgl_lahir) = '".$bln."' "); // Query untuk menghitung seluruh data siswa
 	$sql_count = mysqli_num_rows($sql); // Hitung data yg ada pada query $sql
-	$query = "SELECT * FROM member where MONTH(member_tgl_lahir) = '".$bln."' and (member_nama LIKE '%".$search."%' or member_tanggal LIKE '%".$search."%')";
+	$query = "SELECT * FROM member where MONTH(member_tgl_lahir) = '".$bln."' and (member_nama LIKE '%".$search."%' or member_tgl_lahir LIKE '%".$search."%' OR member_hp LIKE '%".$search."%')";
 	
 } elseif ($_GET['ket']=='stok') {
 
@@ -49,6 +49,11 @@ if ($_GET['ket']=='produk') {
 	$sql_count = mysqli_num_rows($sql); // Hitung data yg ada pada query $sql
 	$query = "SELECT * FROM barang where barang_set_stok=1 and (barang_nama LIKE '%".$search."%')";
 	
+} elseif ($_GET['ket']=='stoklaporan') {
+
+	$sql = mysqli_query($con, "SELECT barang_id FROM barang, kategori WHERE barang_kategori=kategori_id and barang_stok NOT LIKE '0' "); // Query untuk menghitung seluruh data siswa
+	$sql_count = mysqli_num_rows($sql); // Hitung data yg ada pada query $sql
+	$query = "SELECT * FROM barang, kategori where barang_kategori=kategori_id and barang_stok NOT LIKE '0' and (barang_nama LIKE '%".$search."%')";
 }
 
 $order_field = $_POST['order'][0]['column']; // Untuk mengambil nama field yg menjadi acuan untuk sorting
@@ -81,6 +86,36 @@ if ($_GET['ket']=='produk') {
 
         array_push($data,$row_array);
 	}
+} elseif ($_GET['ket']=='stok') {
+
+	$data = array();
+
+	while($dataarray = mysqli_fetch_assoc($sql_data)) {
+
+		$row_array['barang_nama'] = $dataarray['barang_nama'];
+		$row_array['barang_stok'] = $dataarray['barang_stok'];
+		$row_array['barang_set_stok'] = $dataarray['barang_set_stok'];
+		$row_array['barang_id'] = $dataarray['barang_id'];
+
+		$barangid = $dataarray['barang_id'];
+
+
+		$sql1="SELECT * from log_stok WHERE barang='$barangid' and keterangan='tambah' ORDER BY log_id DESC LIMIT 1 ";
+        $query1=mysqli_query($con, $sql1);
+        $data1=mysqli_fetch_assoc($query1);
+        $tanggal = isset($data1['tanggal']) ? $data1['tanggal'] : '0000-00-00';
+
+
+		if ($dataarray['barang_stok']!=0) {
+			$row_array['stok_tanggal'] = $tanggal;
+		} else {
+			$row_array['stok_tanggal'] = '0000-00-00';
+		}
+
+        array_push($data,$row_array);
+
+	}
+
 } else {
 	$data = mysqli_fetch_all($sql_data, MYSQLI_ASSOC); // Untuk mengambil data hasil query menjadi array
 
