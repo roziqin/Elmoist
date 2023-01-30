@@ -84,7 +84,7 @@ include '../config/database.php';
 		<tr>
 
 			<th>Barang</th>
-
+			<th>Kategori</th>
 			<th>Jumlah</th>
 
 		</tr>
@@ -104,7 +104,7 @@ include '../config/database.php';
 
 
 
-		$sql ="SELECT transaksi_tanggal, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and barang_set_stok=1 and transaksi_bulan BETWEEN '$tgl11' AND '$tgl22' GROUP BY barang_id ORDER BY barang_nama ASC";
+		$sql ="SELECT barang_nama, kategori_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang, kategori WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and barang_kategori=kategori_id and transaksi_bulan BETWEEN '$tgl11' AND '$tgl22' GROUP BY barang_id ORDER BY barang_nama ASC";
 
 
 
@@ -121,6 +121,7 @@ include '../config/database.php';
 
 
 			$nama = $datatea["barang_nama"];
+			$kategori = $datatea["kategori_nama"];
 
 			$jumlah = $datatea["jumlah"];
 
@@ -129,7 +130,7 @@ include '../config/database.php';
 			<tr>
 
 				<td><?php echo $nama; ?></td>
-
+				<td><?php echo $kategori; ?></td>
 				<td><?php echo $jumlah; ?></td>
 
 			</tr>
