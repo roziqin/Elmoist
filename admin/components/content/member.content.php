@@ -97,7 +97,7 @@ if ($ket=='home') {
                                 $("#historymember .text-alamat").text("Alamat: "+data[0].member.member_alamat);
                                 $("#historymember .text-usia").text("Usia: "+data[0].member.member_usia);
                                 $("#historymember .text-hp").text("Telp: "+data[0].member.member_hp);
-                                $("#historymember .text-email").text("Telp: "+data[0].member.member_email);
+                                $("#historymember .text-email").text("Email: "+data[0].member.member_email);
                                 $("#historymember .text-gender").text("Gender: "+data[0].member.member_gender);
                                 $("#historymember .text-tgl-lahir").text("Tgl Lahir: "+data[0].member.member_tgl_lahir);
                             } else {
@@ -219,7 +219,7 @@ if ($ket=='home') {
                                 $("#historymember .text-alamat").text("Alamat: "+data[0].member.member_alamat);
                                 $("#historymember .text-usia").text("Usia: "+data[0].member.member_usia);
                                 $("#historymember .text-hp").text("Telp: "+data[0].member.member_hp);
-                                $("#historymember .text-hp").text("Telp: "+data[0].member.member_email);
+                                $("#historymember .text-email").text("Email: "+data[0].member.member_email);
                                 $("#historymember .text-gender").text("Gender: "+data[0].member.member_gender);
                                 $("#historymember .text-tgl-lahir").text("Tgl Lahir: "+data[0].member.member_tgl_lahir);
                             } else {
