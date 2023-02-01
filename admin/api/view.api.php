@@ -498,6 +498,7 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
     $row_array['member']['member_alamat'] = $member_alamat;
     $row_array['member']['member_usia'] = $member_usia;
     $row_array['member']['member_hp'] = $member_hp;
+    $row_array['member']['member_email'] = $member_email;
     $row_array['member']['member_gender'] = $member_gender;
     $row_array['member']['member_tgl_lahir'] = $member_tgl_lahir;
     array_push($array_data,$row_array);
