@@ -408,16 +408,17 @@ if ($kond=='home' || $kond=='') {
         <div class="clear"></div>
         <?php if ($_GET['nonota']!='') { 
             $nota = $_GET['nonota'];
-            $sqlnot="SELECT * FROM transaksi, member where transaksi_member=member_id AND transaksi_id='$nota' ";
+            $sqlnot="SELECT * FROM transaksi, member where transaksi_member=member_id AND transaksi_nota_print='$nota' ";
             $querynot=mysqli_query($con,$sqlnot);
             $datanot=mysqli_fetch_assoc($querynot);
             $diskon = $datanot['transaksi_diskon'];
             $total = $datanot['transaksi_total'];
             $notaprint = $datanot['transaksi_nota_print'];
+            $id = $datanot['transaksi_id'];
         ?>
         <div class="col-md-12 p-5">
 
-            <input type="hidden" id="ip-nota" class="form-control" name="ip-nota" value="<?php echo $nota; ?>" >
+            <input type="hidden" id="ip-nota" class="form-control" name="ip-nota" value="<?php echo $id; ?>" >
             <h3>Cek Nota Transaksi : <?php echo $notaprint; ?></h3>
             <div class="row">
                 <div class="col-md-6 col-md-offset-0">
@@ -437,7 +438,7 @@ if ($kond=='home' || $kond=='') {
                     </thead>
                     <tbody>
                     <?php
-                        $sqlte1="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$nota' ORDER BY transaksi_detail_id ASC";
+                        $sqlte1="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$id' ORDER BY transaksi_detail_id ASC";
                         $queryte1 = mysqli_query($con,$sqlte1);
                         while($datatea = mysqli_fetch_assoc($queryte1)) {
                             $jumlah = $datatea["transaksi_detail_jumlah"];

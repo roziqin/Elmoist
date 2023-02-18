@@ -28,7 +28,7 @@
 
 		
 		if($a!='') {
-			$x="INSERT into log_user(user,login)values('$a','$tgl2')";
+			$x="INSERT into log_user(user,login,logout)values('$a','$tgl2','0000-00-00 00:00:00')";
 			mysqli_query($con, $x);
 			$_SESSION['login_user']	=$a;
 			$_SESSION['name']		= $data['name'];
